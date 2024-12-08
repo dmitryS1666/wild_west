@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WildWest</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <script src="src/jquery.min.js"></script>
+    <script src="src/jquery.easing.min.js"></script>
+</head>
+<body>
+<!--<div id="gamesList"></div>-->
+<div id="app">
+    <audio id="menuMusic" src="res/audio/background_menu_sound.mp3" loop></audio>
+
+    <div id="resetNotification" class="screen hidden">
+        <div class="overlay"></div>
+        <div class="notificationText">Score has been reset</div>
+    </div>
+
+    <div id="containerConfig" class="screen hidden">
+        <div class="containerConfig">
+            <div id="score">
+                <img src="res/wild_west/money.png">
+                <div id="scoreValue" class="scoreValue"></div>
+            </div>
+            <div id="extraPoint" style="z-index: 1000;">
+                <img src="res/wild_west/dead_life.png">
+                <img src="res/wild_west/active_life.png">
+                <img src="res/wild_west/active_life.png">
+            </div>
+            <div id="settingsButton" style="z-index: 1000;">
+                <img src="res/wild_west/setting.png">
+            </div>
+        </div>
+    </div>
+    <div id="firstPage" class="screen">
+        <div id="character">
+            <img src="res/wild_west/logo.png">
+        </div>
+        <div class="text blink">
+            <p>Tap to continue</p>
+        </div>
+    </div>
+    <div id="menuPage" class="screen hidden">
+        <div class="title">MENU</div>
+        <button id="gamesBtn">
+            <img src="res/wild_west/star.png"/>
+            GAMES
+            <img src="res/wild_west/star.png"/>
+        </button>
+        <button id="settingBtn">
+            <img src="res/wild_west/star.png"/>
+            SETTINGS
+            <img src="res/wild_west/star.png"/>
+        </button>
+        <button id="privacyBtn">
+            <img src="res/wild_west/star.png"/>
+            PRIVACY
+            <img src="res/wild_west/star.png"/>
+        </button>
+        <div id="back">
+            <img src="res/wild_west/back_button.png">
+        </div>
+    </div>
+
+    <div id="gamesPage" class="screen hidden">
+        <div class="title">GAMES</div>
+
+        <div class="checkbox-container">
+            <label class="checkbox-item">
+                <input type="radio" name="image-checkbox" value="spin_jack" class="image-checkbox" onchange="adjustImages(this)">
+                <img src="res/wild_west/spin_jack_logo.png" alt="Image 1">
+            </label>
+            <label class="checkbox-item">
+                <input type="radio" name="image-checkbox" value="mostWantedPage" class="image-checkbox" onchange="adjustImages(this)">
+                <img src="res/wild_west/most_wanted_logo.png" alt="Image 2">
+            </label>
+            <label class="checkbox-item">
+                <input type="radio" name="image-checkbox" value="old_saloon" class="image-checkbox" onchange="adjustImages(this)">
+                <img src="res/wild_west/old_saloon_logo.png" alt="Image 3">
+            </label>
+        </div>
+
+        <div id="close_btn">
+            <img src="res/wild_west/back_button.png">
+        </div>
+        <div id="continue">
+            <img src="res/wild_west/continue_button.png">
+        </div>
+    </div>
+
+    <div id="preloaderPage">
+        <div id="preloader">
+            <div id="floatingCirclesG">
+                <div class="f_circleG" id="frotateG_01"></div>
+                <div class="f_circleG" id="frotateG_02"></div>
+                <div class="f_circleG" id="frotateG_03"></div>
+                <div class="f_circleG" id="frotateG_04"></div>
+                <div class="f_circleG" id="frotateG_05"></div>
+                <div class="f_circleG" id="frotateG_06"></div>
+                <div class="f_circleG" id="frotateG_07"></div>
+                <div class="f_circleG" id="frotateG_08"></div>
+                <div id="percentage">0%</div>
+            </div>
+        </div>
+    </div>
+    <div id="acceptPage" class="screen hidden">
+        <div class="canva privacy">
+            <div class="title">
+                <p>Privacy policy</p>
+            </div>
+            <div class="body">
+                <div class="raw" style="text-align: center; margin-top: 45%;">
+                    <button id="readPrivacyPolicy" class="reset_button">Read privacy</button>
+                </div>
+                <div class="raw">
+                    <button id="acceptPrivacy" class="ok_button">
+                        <img src="res/accept_button.png">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="settings" class="screen hidden">
+        <div class="title">SETTINGS</div>
+
+        <div class="switchRawFirst">
+            <span class="switchSpan">Music</span>
+            <input type="checkbox" hidden="hidden" id="toggle-music">
+            <label class="switch" for="toggle-music"></label>
+        </div>
+
+        <div class="switchRawSecond">
+            <span class="switchSpan">SFX</span>
+            <input type="checkbox" hidden="hidden" id="toggle-vibration">
+            <label class="switch" for="toggle-vibration"></label>
+        </div>
+
+        <div class="switchRawThird">
+            <button id="resetGame" class="reset_button">Reset score</button>
+            <button id="" class="reset_button">Privacy policy</button>
+        </div>
+
+        <div id="close_btn">
+            <img src="res/wild_west/back_button.png">
+        </div>
+        <div id="okSettings">
+            <img src="res/wild_west/accept_button.png">
+        </div>
+    </div>
+
+    <div id="winPage" class="screen hidden">
+        <div class="score">
+            <div class="flash">
+                <div class="scoreText">WIN</div>
+                <div class="scoreValue">
+                    <p id="value" class="hidden">
+                        200
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="btn">
+            <button id="backWin">
+                <img src="res/wild_west/back_button.png">
+            </button>
+            <button id="againWin">
+                <img src="res/wild_west/again_button.png">
+            </button>
+        </div>
+    </div>
+
+    <div id="failPage" class="screen hidden">
+        <div class="score">
+            <div class="scoreText">LOSE</div>
+            <div class="scoreValue">
+                <p id="value">0</p>
+            </div>
+        </div>
+        <div class="btn">
+            <button id="backFail">
+                <img src="res/wild_west/back_button.png">
+            </button>
+            <button id="againFail">
+                <img src="res/wild_west/again_button.png">
+            </button>
+        </div>
+    </div>
+
+    <div id="spinJackPage" class="screen hidden">
+    </div>
+
+    <div id="mostWantedPage" class="screen hidden">
+        <div id="rouletteContainer">
+            <canvas id="rouletteCanvas" width="480" height="480"></canvas>
+
+            <div id="gameScoreRoulette">
+                <div class="betControlRoulette">
+                    <span id="currentBetRoulette">150</span>
+                    <button id="minusBetRoulette">
+                        <img src="res/wild_west/minus_button.png">
+                    </button>
+                    <button id="plusBetRoulette">
+                        <img src="res/wild_west/plus_button.png">
+                    </button>
+                </div>
+                <button id="backRoulette">
+                    <img src="res/wild_west/back_button.png">
+                </button>
+                <button id="spinButton">
+                    <img src="res/wild_west/play_button.png">
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="oldSaloonPage" class="screen hidden">
+    </div>
+
+
+    <div id="questionDay" class="screen hidden">
+        <div class="title">
+            <p>Question of the day</p>
+        </div>
+        <div class="text">Get a chance to win the extra points!</div>
+        <div class="questionBody">
+            <div class="question">Question Question Question</div>
+            <div class="answers">
+                <div class="item" id="itemA">
+                    <div class="text"><b>A:</b> answer</div>
+                </div>
+                <div class="item" id="itemB">
+                    <div class="text"><b>B:</b> answer</div>
+                </div>
+                <div class="item" id="itemC">
+                    <div class="text"><b>C:</b> answer</div>
+                </div>
+                <div class="item" id="itemD">
+                    <div class="text"><b>D:</b> answer</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .closed -->
+    <div id="questionGame" class="screen hidden">
+        <div id="timer" class="timer">
+            <img src="res/time.png"><span>00:12</span>
+        </div>
+        <div class="questionBody">
+            <div class="question">Question Question Question</div>
+            <div class="answers">
+                <div class="item" id="itemAGame">
+                    <div class="text"><b>A:</b> answer</div>
+                </div>
+                <div class="item" id="itemBGame">
+                    <div class="text"><b>B:</b> answer</div>
+                </div>
+                <div class="item" id="itemCGame">
+                    <div class="text"><b>C:</b> answer</div>
+                </div>
+                <div class="item" id="itemDGame">
+                    <div class="text"><b>D:</b> answer</div>
+                </div>
+            </div>
+        </div>
+        <div class="hintGame">
+            <div id="fiftyOnFifty">
+                <span id="extraPoints"></span>
+            </div>
+            <div id="call">
+                <span id="extraPoints"></span>
+            </div>
+            <div id="audience">
+                <span id="extraPoints"></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="progressPage" class="screen hidden">
+        <div class="levels">
+            <div class="item" id="level_10" data-level="10" data-score="1000000">
+                <div class="leven_num">10</div>
+                <div class="point">
+                    <img src="res/money_icon.png">
+                    <p>1000000</p>
+                </div>
+            </div>
+            <div class="item" id="level_9" data-level="9" data-score="500000">
+                <div class="leven_num">9</div>
+                <div class="point">
+                    <img src="res/money_icon.png">
+                    <p>500000</p>
+                </div>
+            </div>
+            <div class="item" id="level_8" data-level="8" data-score="300000">
+                <div class="leven_num">8</div>
+                <div class="point">
+                    <img src="res/money_icon.png">
+                    <p>300000</p>
+                </div>
+            </div>
+            <div class="item" id="level_7" data-level="7" data-score="150000">
+                <div class="leven_num">7</div>
+                <div class="point">
+                    <img src="res/money_icon.png">
+                    <p>150000</p>
+                </div>
+            </div>
+            <div class="item" id="level_6" data-level="6" data-score="75000">
+                <div class="leven_num">6</div>
+                <div class="point">
+                    <img src="res/money_icon.png">
+                    <p>75000</p>
+                </div>
+            </div>
+            <div class="item" id="level_5" data-level="5" data-score="50000">
+                <div class="leven_num">5</div>
+                <div class="point">
+                    <img src="res/money_icon.png">
+                    <p>50000</p>
+                </div>
+            </div>
+            <div class="item" id="level_4" data-level="4" data-score="25000">
+                <div class="leven_num">4</div>
+                <div class="point">
+                    <img src="res/money_icon.png">
+                    <p>25000</p>
+                </div>
+            </div>
+            <div class="item" id="level_3" data-level="3" data-score="5000">
+                <div class="leven_num">3</div>
+                <div class="point">
+                    <img src="res/money_icon.png">
+                    <p>5000</p>
+                </div>
+            </div>
+            <div class="item" id="level_2" data-level="2" data-score="1000">
+                <div class="leven_num">2</div>
+                <div class="point">
+                    <img src="res/money_icon.png">
+                    <p>1000</p>
+                </div>
+            </div>
+            <div class="item" id="level_1" data-level="1" data-score="150">
+                <div class="leven_num">1</div>
+                <div class="point">
+                    <img src="res/money_icon.png">
+                    <p>150</p>
+                </div>
+            </div>
+        </div>
+        <div class="text">
+            <p>Tap to continue</p>
+        </div>
+    </div>
+
+    <div id="game" class="screen hidden">
+        <div id="question-container">
+            <h2 id="question"></h2>
+            <ul id="answer-buttons">
+                <!-- Варианты ответов -->
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="dist/index.js"></script>
+</body>
+</html>
