@@ -1,5 +1,4 @@
 import {loadSettings, runMusic, stopMusic} from './settings.js';
-import {checkQuestionOfTheDay} from './game.js';
 import {showPreloader, switchScreen} from "./ui";
 
 import {App} from "@capacitor/app";
@@ -99,7 +98,6 @@ export function checkFirstRunAndLoadData() {
 
     if (acceptPrivacy) {
         loadSettings();
-        checkQuestionOfTheDay();
     } else {
         switchScreen('acceptPage');
     }

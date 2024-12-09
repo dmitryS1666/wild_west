@@ -2,10 +2,13 @@
 // ------------------ Рулетка ------------------ //
 // --------------------------------------------- //
 
+import {clickSound, vibrate} from "./settings";
+import {switchScreen} from "./ui";
+
 const rouletteSegments = [3.2, 3.2, 1.2, 2.2, 3.2, 2.2, 0, 5.0];
 let rouletteCanvas, rouletteCtx;
 let isSpinning = false; // Флаг для отслеживания вращения рулетки
-let score = 0;
+let score = localStorage.getItem('score') || 0;
 let gameOverRoulette = false; // Флаг для отслеживания состояния игры
 
 const rouletteImage = new Image();
@@ -27,8 +30,7 @@ export function setupRoulette() {
 
     // Устанавливаем начальные значения заглушек
     document.getElementById('currentBetRoulette').textContent = 10; // Заглушка ставки
-    document.getElementById('scoreValueRoulette').textContent = score || 0;
-    document.getElementById('balanceValueRoulette').textContent = 1000; // Заглушка баланса
+    document.getElementById('scoreValue').textContent = score;
 }
 
 // Величина поворота в радианах
@@ -124,18 +126,44 @@ function spinRoulette() {
 
 // Функция завершения игры
 function endGameRoulette(winningSegment) {
-    let currentBet = 10; // Заглушка ставки
+    let currentBet = document.getElementById('currentBetRoulette').innerText; // Заглушка ставки
     let result;
 
-    score = rouletteSegments[winningSegment];
+    let rate = rouletteSegments[winningSegment];
 
-    if (score === 2 || score === 1.5) {
-        result = parseFloat(score) * currentBet;
-    } else {
-        result = parseFloat(score) + currentBet;
-    }
+    result = parseFloat(rate) * parseFloat(currentBet);
 
     console.log(`Выпавший сектор: ${rouletteSegments[winningSegment]}`);
+    console.log(`Текущая ставка: ${currentBet}`);
     console.log(`Результат: ${result}`);
+
+    localStorage.setItem('score', parseFloat(score) + result);
     gameOverRoulette = true; // Игра завершена
+
+
+    setTimeout(() => {
+        if (result !== 0) {
+            switchScreen('winPage', 123)
+        } else  {
+            switchScreen('failPage')
+        }
+    }, 2500);
+}
+
+const minusBetRBtn = document.getElementById('minusBetRoulette');
+if (minusBetRBtn) {
+    minusBetRBtn.addEventListener('click', () => {
+        let bet = document.getElementById('currentBetRoulette');
+        if (bet.innerText > 0) {
+            bet.innerText = parseFloat(bet.innerText) - 10;
+        }
+    });
+}
+
+const plusBetRBtn = document.getElementById('plusBetRoulette');
+if (plusBetRBtn) {
+    plusBetRBtn.addEventListener('click', () => {
+        let bet = document.getElementById('currentBetRoulette');
+        bet.innerText = parseFloat(bet.innerText) + 10;
+    });
 }

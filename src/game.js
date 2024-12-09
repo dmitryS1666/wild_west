@@ -6,10 +6,6 @@ let mainPoints, extraPoints;
 
 localStorage.setItem('extraPoints', 6);
 
-let usedHint5050 = false;
-let usedHintFriend = false;
-let usedHintAudience = false;
-
 // GAME
 // Запуск основного игрового процесса
 function startMainGame() {
@@ -18,7 +14,6 @@ function startMainGame() {
     const currentQuestionIndex = loadProgress();
 
     showInfoBlock(true);
-    showHintBlock(extraPoints);
 
     // Обновляем прогресс на экране
     updateProgressPage(currentQuestionIndex);
@@ -29,7 +24,6 @@ function startMainGame() {
     }
 
     updateExtraPointsDisplay();
-    cleanHintResult();
 
     switchScreen('questionGame'); // Переходим на экран игры
     loadQuestions().then(questions => {
@@ -148,7 +142,6 @@ function handleMainAnswer(selectedIndex, correctIndex, currentQuestionIndex) {
 
         if (currentQuestionIndex >= MAX_QUESTIONS_PER_ROUND) {
             resetProgress();
-            resetHints();
         }
     } else {
         // Неправильный ответ
@@ -158,7 +151,6 @@ function handleMainAnswer(selectedIndex, correctIndex, currentQuestionIndex) {
         } else {
             switchScreen('failPage'); // Переход на экран проигрыша
             resetProgress(); // Сброс прогресса, конец игры
-            resetHints();
         }
     }
 }
@@ -197,75 +189,6 @@ async function loadQuestions() {
 
 // DAILY section
 // Проверка даты последнего вопроса дня
-function checkQuestionOfTheDay() {
-    runMusic();
-    const lastQuestionDate = localStorage.getItem('lastQuestionDate');
-    const today = new Date().toLocaleDateString();
-
-    if (lastQuestionDate !== today) {
-        showQuestionOfTheDay();
-    } else {
-        switchScreen('progressPage');
-        const scoreValue = document.getElementById("scoreValue");
-        if (scoreValue) {
-            scoreValue.textContent = `${mainPoints}`;
-        }
-        showInfoBlock(true);
-    }
-}
-
-// Загрузка вопросов дня из файла JSON
-async function loadDailyQuestions() {
-    const response = await fetch('questions.json');
-    const questions = await response.json();
-    return questions;
-}
-
-// Показать вопрос дня
-async function showQuestionOfTheDay() {
-    switchScreen('questionDay');
-    showInfoBlock(true);
-
-    const questions = await loadDailyQuestions();
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    const question = questions[randomIndex];
-
-    displayDailyQuestion(question);
-}
-
-// Отображение вопроса дня и вариантов ответов
-function displayDailyQuestion(question) {
-    const questionElement = document.querySelector('#questionDay .question');
-    const answerElements = document.querySelectorAll('#questionDay .item');
-
-    questionElement.innerText = question.question;
-
-    answerElements.forEach((element, index) => {
-        element.querySelector('.text').innerHTML = `<b>${String.fromCharCode(65 + index)}:</b> ${question.answers[index]}`;
-        element.onclick = () => handleDailyAnswer(index, question.correct);
-    });
-}
-
-// Обработка ответа на вопрос дня
-function handleDailyAnswer(selectedIndex, correctIndex) {
-    tapSound.play();
-
-    // let extraPoints = parseInt(localStorage.getItem('extraPoints')) || 0; // Приводим к числу или устанавливаем 0, если нет
-
-    // Сохраняем дату последнего ответа на вопрос дня
-    const today = new Date().toLocaleDateString();
-    localStorage.setItem('lastQuestionDate', today);
-
-    showInfoBlock(true);
-
-    // if (selectedIndex === correctIndex) {
-    //     extraPoints += 2; // Добавляем 2 extra points за правильный ответ
-    //     localStorage.setItem('extraPoints', extraPoints); // Сохраняем обновленные extra points
-    //     switchScreen('winPage', true);
-    // } else {
-        switchScreen('failPage');
-    // }
-}
 
 function showInfoBlock(extraPoints) {
     const infoBlock = document.getElementById('containerConfig');
@@ -288,136 +211,9 @@ function updateExtraPointsDisplay() {
     extraPointsElements.forEach(element => {
         element.textContent = `${extraPoints}`;
     });
-
-    showHintBlock(extraPoints);
-}
-
-// HINT SECTION
-function showHintBlock(extraPoints) {
-    let fiftyOnFiftyBtn = document.getElementById('fiftyOnFifty');
-    let callBtn = document.getElementById('call');
-    let audienceBtn = document.getElementById('audience');
-
-    if (extraPoints > 0) {
-        audienceBtn.classList.remove('block');
-        audienceBtn.classList.add('active');
-
-        callBtn.classList.remove('block');
-        callBtn.classList.add('active');
-
-        fiftyOnFiftyBtn.classList.remove('block');
-        fiftyOnFiftyBtn.classList.add('active');
-    } else {
-        audienceBtn.classList.remove('active');
-        audienceBtn.classList.add('block');
-
-        callBtn.classList.remove('active');
-        callBtn.classList.add('block');
-
-        fiftyOnFiftyBtn.classList.remove('active');
-        fiftyOnFiftyBtn.classList.add('block');
-    }
-}
-
-function resetHints() {
-    usedHint5050 = false;
-    usedHintFriend = false;
-    usedHintAudience = false;
-
-    // Разблокируем кнопки подсказок
-    const hintButtons = document.querySelectorAll('#hintAudience, #fiftyOnFifty, #call');
-    hintButtons.forEach(button => {
-        button.disabled = false;
-        button.classList.remove('block');
-        button.classList.add('active');
-    });
-
-    updateExtraPointsDisplay(); // Обновляем отображение подсказок
-}
-
-function useHint5050() {
-    const currentQuestionIndex = loadProgress();
-    loadQuestions().then(questions => {
-        const question = questions[currentQuestionIndex];
-        const incorrectAnswers = [];
-
-        // Собираем индексы всех неправильных ответов
-        question.answers.forEach((answer, index) => {
-            if (index !== question.correct) {
-                incorrectAnswers.push(index);
-            }
-        });
-
-        // Перемешиваем неправильные ответы и выбираем два для скрытия
-        shuffleArray(incorrectAnswers);
-        const [first, second] = incorrectAnswers.slice(0, 2);
-
-        // Прячем выбранные два ответа
-        const answerElements = document.querySelectorAll('#questionGame .item');
-        answerElements[first].classList.add('closed');
-        answerElements[second].classList.add('closed');
-
-        extraPoints -= 2;
-        localStorage.setItem('extraPoints', extraPoints)
-        updateExtraPointsDisplay();
-
-        document.getElementById('fiftyOnFifty').classList.add('block');
-    });
-}
-
-function useHintFriend() {
-    const currentQuestionIndex = loadProgress();
-    loadQuestions().then(questions => {
-        const question = questions[currentQuestionIndex];
-
-        // Генерируем вероятность того, что друг знает правильный ответ
-        const knowsCorrectAnswer = Math.random() < 0.7;
-
-        let suggestedAnswer;
-        if (knowsCorrectAnswer) {
-            suggestedAnswer = question.correct; // Друг знает правильный ответ
-        } else {
-            // Случайный неправильный ответ
-            const incorrectAnswers = question.answers.map((_, index) => index).filter(index => index !== question.correct);
-            suggestedAnswer = incorrectAnswers[Math.floor(Math.random() * incorrectAnswers.length)];
-        }
-
-        // подсвечиваем выбранный ответ
-        const answerElements = document.querySelectorAll('#questionGame .item');
-        answerElements.forEach((answer, index) => {
-            if (index === suggestedAnswer) {
-                answer.classList.add('selected');
-            } else {
-                answer.classList.add('unselected');
-            }
-        });
-
-        extraPoints -= 2;
-        localStorage.setItem('extraPoints', extraPoints)
-        updateExtraPointsDisplay();
-
-        document.getElementById('call').classList.add('block');
-    });
-}
-
-function cleanHintResult() {
-    const answerElements = document.querySelectorAll('#questionGame .item');
-    answerElements.forEach((answer, index) => {
-        answer.classList.remove('unselected');
-        answer.classList.remove('selected');
-        answer.classList.remove('closed');
-    });
-}
-
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
 }
 
 export {
-    checkQuestionOfTheDay,
     loadQuestions,
     showQuestion,
     startMainGame,

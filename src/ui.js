@@ -262,7 +262,7 @@ function showPreloader() {
     });
 }
 
-function switchScreen(screenId, isDailyQuestion = false, levelScore = 0) {
+function switchScreen(screenId, isDailyQuestion = false, levelScore= 0) {
     const screens = document.querySelectorAll('.screen');
     showInfoBlock(false);
 
@@ -303,10 +303,16 @@ function switchScreen(screenId, isDailyQuestion = false, levelScore = 0) {
 }
 
 function showWinPage(levelScore) {
-    const valueElement = document.getElementById('value');
+    const valueElement = document.getElementById('winValue');
     const extraValueElement = document.getElementById('extraValue');
 
     // winSound.play();
+
+    console.log('levelScore: ');
+    console.log(levelScore);
+    console.log('-------------------------');
+    console.log(valueElement);
+    console.log('-------------------------');
 
     valueElement.innerHTML = `${levelScore}`;
     valueElement.classList.remove('hidden');
