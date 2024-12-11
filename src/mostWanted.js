@@ -133,21 +133,17 @@ function endGameRoulette(winningSegment) {
 
     result = parseFloat(rate) * parseFloat(currentBet);
 
-    console.log(`Выпавший сектор: ${rouletteSegments[winningSegment]}`);
-    console.log(`Текущая ставка: ${currentBet}`);
-    console.log(`Результат: ${result}`);
-
     localStorage.setItem('score', parseFloat(score) + result);
     gameOverRoulette = true; // Игра завершена
 
 
     setTimeout(() => {
         if (result !== 0) {
-            switchScreen('winPage', 123)
+            switchScreen('winPage', result)
         } else  {
             switchScreen('failPage')
         }
-    }, 2500);
+    }, 1000);
 }
 
 const minusBetRBtn = document.getElementById('minusBetRoulette');

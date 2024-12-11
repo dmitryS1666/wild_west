@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Слот-Машина</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #2c3e50;
+        }
+
+        .slot-machine {
+            text-align: center;
+            background-color: #34495e;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .reels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .reel {
+            width: 70px;
+            height: 200px;
+            overflow: hidden;
+            background-color: #ecf0f1;
+            border-radius: 10px;
+            position: relative;
+            font-size: 24px;
+            line-height: 40px;
+            border: 1px solid gray;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #c0392b;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slot-machine">
+    <div class="reels">
+        <div class="reel" id="reel1"></div>
+        <div class="reel" id="reel2"></div>
+        <div class="reel" id="reel3"></div>
+        <div class="reel" id="reel4"></div>
+    </div>
+    <button id="spinButton">Вращать</button>
+</div>
+<script src="slot.js"></script>
+</body>
+</html>

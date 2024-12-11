@@ -847,72 +847,6 @@ input:checked + .switch:active::before {
 
 /*---------------END QUESTION GAME------------------*/
 
-/*------------------PROGRESS PAGE----------------------*/
-#progressPage {
-    position: absolute;
-    width: 100%;
-    height: 100vh;
-}
-
-#progressPage .levels {
-    width: 80%;
-    margin: 20% auto auto;
-}
-
-#progressPage .levels .item {
-    height: 40px;
-    border: 5px solid #fd4a98b8;
-    border-radius: 45px;
-    margin-bottom: 2%;
-    background: #ffffff82;
-    line-height: 40px;
-    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
-}
-
-#progressPage .levels .active {
-    background: #f9659b;
-}
-
-#progressPage .levels .done {
-    background: #e5e5e5;
-}
-
-#progressPage .levels .item .leven_num {
-    float: left;
-    padding-left: 30px;
-    font-weight: bold;
-    font-family: "Angkor", serif;
-    font-size: 18px;
-}
-
-#progressPage .levels .item .point {
-    width: 40%;
-    float: right;
-}
-
-#progressPage .levels .item .point img {
-    width: 25%;
-    float: left;
-    padding-top: 5px;
-}
-
-#progressPage .levels .item .point p {
-    float: left;
-    margin: 0 0 0 15px;
-    font-family: "Angkor", serif;
-    font-size: 18px;
-}
-
-#progressPage .text {
-    text-align: center;
-    color: #000000;
-    font-family: "Angkor", serif;
-    font-weight: bold;
-    font-size: 22px;
-}
-
-/*----------------END PROGRESS PAGE--------------------*/
-
 /*----------------MOST WANTED PAGE----------------------*/
 #mostWantedPage {
     position: absolute;
@@ -998,6 +932,117 @@ input:checked + .switch:active::before {
 }
 
 /*--------------END MOST WANTED PAGE--------------------*/
+
+/*--------------MOST SPIN JACK PAGE--------------------*/
+
+#spinJackPage {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background-image: url(res/wild_west/spin_jack_bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#spinJackCanvas {
+    position: absolute;
+    top: 15%;
+    width: 100%;
+    height: 55%;
+}
+
+#gameScoreSpinJack {
+    height: 100px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.reels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.reel {
+    width: 100px;
+    overflow: hidden;
+    background-color: #232223;
+    position: relative;
+    font-size: 24px;
+    line-height: 40px;
+    border: 1px solid #F88B00;
+    height: 400px;
+    text-align: center;
+}
+
+.reel .item {
+    width: 100%;
+    height: 13%;
+    vertical-align: baseline;
+}
+
+.betControlSpinJack {
+    position: absolute;
+    bottom: 155px;
+    right: 0;
+    width: 44%;
+}
+
+#currentBetSpinJack {
+    width: 95%;
+    position: absolute;
+    top: -50px;
+    border: 2px solid #F6AA73;
+    background: white;
+    border-radius: 5px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    font-size: 24px;
+}
+
+.betControlSpinJack button {
+    background: none;
+    border: none;
+    padding: unset;
+}
+
+#backSpinJack,
+#spinSpinJackButton {
+    position: absolute;
+    bottom: -5px;
+    border: none;
+    background: none;
+    padding: unset;
+    width: 180px;
+}
+
+#minusBetSpinJack {
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+
+#plusBetSpinJack {
+    right: 5px;
+    position: absolute;
+}
+
+#backSpinJack {
+    left: 0;
+}
+
+#spinSpinJackButton {
+    right: 0;
+}
+
+/*---------------END SPIN JACK PAGE--------------------*/
 
 
 

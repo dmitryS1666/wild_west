@@ -1,10 +1,6 @@
 import {
-    startMainGame,
-    loadProgress,
-    updateProgressPage,
     showInfoBlock,
     timer,
-    updateExtraPointsDisplay
 } from './game.js';
 
 import {
@@ -20,6 +16,7 @@ import {
 import {checkFirstRunAndLoadData} from "./index";
 import { Plugins } from '@capacitor/core';
 import {setupRoulette} from "./mostWanted";
+import {setupSpinJack} from "./spinJack";
 
 const { App } = Plugins;
 
@@ -90,7 +87,6 @@ if (acceptPrivacyBtn) {
         clickSound.play();
         localStorage.setItem('acceptPolicy', true);
         vibrate(100);
-        switchScreen('progressPage');
     });
 }
 
@@ -154,7 +150,6 @@ if (continueFailBtn) {
         clickSound.play();
         vibrate(100);
         runMusic();
-        switchScreen('progressPage');
     });
 }
 
@@ -173,7 +168,8 @@ const firstPageTap = document.getElementById('firstPage');
 if (firstPageTap) {
     firstPageTap.addEventListener("click", () => {
         // switchScreen('menuPage');
-        switchScreen('mostWantedPage');
+        // switchScreen('mostWantedPage');
+        switchScreen('spinJackPage');
     });
 }
 
@@ -209,6 +205,14 @@ if (againFailBtn) {
     });
 }
 
+// BACK_ROULETTE
+const backRouletteBtn = document.getElementById('backRoulette');
+if (backRouletteBtn) {
+    backRouletteBtn.addEventListener("click", () => {
+        switchScreen('gamesPage');
+    });
+}
+
 const useExtraPoints = document.getElementById('useExtraPoints');
 if (useExtraPoints) {
     document.getElementById('useExtraPoints').addEventListener('click', () => {
@@ -218,7 +222,6 @@ if (useExtraPoints) {
         let extraPoints = parseInt(localStorage.getItem('extraPoints')) || 0;
         extraPoints = extraPoints - 2;
         localStorage.setItem('extraPoints', extraPoints);
-        switchScreen('progressPage'); // Переход к экрану основных вопросов
     });
 }
 
@@ -262,7 +265,7 @@ function showPreloader() {
     });
 }
 
-function switchScreen(screenId, isDailyQuestion = false, levelScore= 0) {
+function switchScreen(screenId, levelScore= 0) {
     const screens = document.querySelectorAll('.screen');
     showInfoBlock(false);
 
@@ -278,27 +281,30 @@ function switchScreen(screenId, isDailyQuestion = false, levelScore= 0) {
         const scoreValue = document.getElementById("scoreValue");
         scoreValue.textContent = `${mainPoints}`;
 
-        if (screenId === 'progressPage') {
-            runMusic();
-
-            let currentQuestionIndex = loadProgress();
-            updateProgressPage(currentQuestionIndex);
-            showInfoBlock(true);
-        }
         if (screenId === 'winPage') {
             stopMusic();
             showWinPage(levelScore);
-            showInfoBlock(true);
+            showInfoBlock(false);
         }
         if (screenId === 'failPage') {
             stopMusic();
             showFailPage();
-            showInfoBlock(true);
+            showInfoBlock(false);
+        }
+        if (screenId === 'spinJackPage') {
+            showInfoBlock(false);
+            setupSpinJack();
         }
         if (screenId === 'mostWantedPage') {
             showInfoBlock(false);
             setupRoulette();
         }
+        if (screenId === 'oldSaloonPage') {
+            showInfoBlock(true);
+            // setupRoulette();
+        }
+
+        document.getElementById('scoreValue').innerText = localStorage.getItem('score');
     });
 }
 
@@ -308,13 +314,7 @@ function showWinPage(levelScore) {
 
     // winSound.play();
 
-    console.log('levelScore: ');
-    console.log(levelScore);
-    console.log('-------------------------');
-    console.log(valueElement);
-    console.log('-------------------------');
-
-    valueElement.innerHTML = `${levelScore}`;
+    valueElement.innerHTML = `+${levelScore}`;
     valueElement.classList.remove('hidden');
     // extraValueElement.classList.add('hidden');
     // runMusic();
@@ -347,14 +347,6 @@ window.adjustImages = function(selectedCheckbox) {
 function showFailPage() {
     failSound.play();
 }
-
-// Обработка клика для возобновления игры с текущего вопроса
-document.getElementById('progressPage').addEventListener('click', () => {
-    clickSound.play();
-    vibrate(100);
-
-    startMainGame(); // Возобновляем игру с текущего вопроса
-});
 
 function updatePercentage(percentageElement, progress) {
     if (progress <= 100) {
