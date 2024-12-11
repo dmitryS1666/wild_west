@@ -983,8 +983,18 @@ input:checked + .switch:active::before {
 
 .reel .item {
     width: 100%;
-    height: 13%;
+    height: 20%;
+    position: relative;
     vertical-align: baseline;
+}
+
+.reel .item img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
 }
 
 .betControlSpinJack {

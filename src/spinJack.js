@@ -51,23 +51,11 @@ function updateReelDisplay(index) {
 }
 
 function addItem(src) {
-    let div = document.createElement("div");
-    div.classList.add('item');
-
-    // let p = document.createElement("p");
-
-    let img = document.createElement("img");
-    img.src = src;
-    img.setAttribute("height", "50");
-    img.setAttribute("width", "50");
-
-    // p.appendChild(elem);
-    div.appendChild(img);
-
-    // console.log(p);
-    console.log(div);
-
-    return div;
+    return `
+        <div class="item">
+            <img src="${src}">
+        </div>
+    `;
 }
 
 // Функция вращения барабанов
