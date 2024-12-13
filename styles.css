@@ -80,7 +80,7 @@ html, body, button, p, span {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    margin-top: 65%;
+    top: 0;
     font-size: 12em;
     color: #FFC400;
     width: 100%;
@@ -90,8 +90,9 @@ html, body, button, p, span {
 
 #floatingCirclesG{
     position:relative;
-    width:270px;
-    height:270px;
+    width: 270px;
+    height: 270px;
+    top: 25%;
     margin:auto;
     transform:scale(0.6);
     -o-transform:scale(0.6);
@@ -544,6 +545,25 @@ input:checked + .switch:active::before {
     height: 100%;
     position: absolute;
     background: url(../res/wild_west/flash.png) no-repeat center center;
+    animation: flashAnimation 2s infinite ease-in-out;
+    z-index: 1;
+    scale: 1.2;
+}
+
+/* Анимация мигания фона */
+@keyframes flashAnimation {
+    0% {
+        opacity: 0.2;
+        transform: scale(0.8); /* Начинаем с меньшего размера */
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2); /* Увеличиваем до большего размера */
+    }
+    100% {
+        opacity: 0.2;
+        transform: scale(0.8); /* Возвращаем обратно к меньшему размеру */
+    }
 }
 
 #winPage .score,
@@ -568,6 +588,8 @@ input:checked + .switch:active::before {
     color: white;
     font-size: 30pt;
     margin-top: 120px;
+    position: relative;
+    z-index: 2;
 }
 
 #winPage .score .scoreValue,
@@ -575,9 +597,10 @@ input:checked + .switch:active::before {
     font-weight: 400;
     color: #820C06;
     font-size: 70px;
-    position: absolute;
+    position: relative;
     left: 50%;
     transform: translateX(-50%) translateY(-120px);
+    z-index: 2;
 }
 
 #winPage .btn,

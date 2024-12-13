@@ -1,9 +1,6 @@
 let failSound = new Audio('res/audio/fail.mp3');
-let failFinalSound = new Audio('res/audio/final_fail.mp3');
 let winSound = new Audio('res/audio/win.mp3');
-let winFinalSound = new Audio('res/audio/final_win.mp3');
 let timeOutSound = new Audio('res/audio/time_out.mp3');
-let tapSound = new Audio('res/audio/get_answer.mp3');
 let clickSound = new Audio('res/audio/click.mp3');
 
 const menuMusic = document.getElementById('menuMusic');
@@ -71,11 +68,8 @@ export {
     loadSettings,
     saveSettings,
     failSound,
-    failFinalSound,
     winSound,
-    winFinalSound,
     timeOutSound,
-    tapSound,
     stopMusic,
     clickSound,
     runMusic

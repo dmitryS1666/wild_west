@@ -7,7 +7,6 @@ import {
     failSound,
     runMusic,
     stopMusic,
-    tapSound,
     winSound,
     clickSound,
     vibrate
@@ -26,9 +25,10 @@ const readPrivacyPolicyBtn = document.getElementById('readPrivacyPolicy');
 if (readPrivacyPolicyBtn) {
     readPrivacyPolicyBtn.addEventListener('click', () => {
         clickSound.play();
+        vibrate(100);
 
         const openInExternalBrowser = async () => {
-            window.open('https://lucky-quizz.site', '_system'); // открывает внешний браузер
+            window.open('https://appwildwest.com/policy', '_system'); // открывает внешний браузер
         };
 
         openInExternalBrowser();
@@ -40,9 +40,10 @@ const privacyBtn = document.getElementById('privacyBtn');
 if (privacyBtn) {
     privacyBtn.addEventListener('click', () => {
         clickSound.play();
+        vibrate(100);
 
         const openInExternalBrowser = async () => {
-            window.open('https://lucky-quizz.site', '_system'); // открывает внешний браузер
+            window.open('https://appwildwest.com/policy', '_system'); // открывает внешний браузер
         };
 
         openInExternalBrowser();
@@ -54,9 +55,10 @@ const privacyPolicyBtn = document.getElementById('privacyPolicy');
 if (privacyPolicyBtn) {
     privacyPolicyBtn.addEventListener('click', () => {
         clickSound.play();
+        vibrate(100);
 
         const openInExternalBrowser = async () => {
-            window.open('https://lucky-quizz.site', '_system'); // открывает внешний браузер
+            window.open('https://appwildwest.com/policy', '_system'); // открывает внешний браузер
         };
 
         openInExternalBrowser();
@@ -67,7 +69,6 @@ if (privacyPolicyBtn) {
 const backBtn = document.getElementById('back');
 if (backBtn) {
     backBtn.addEventListener('click', () => {
-        clickSound.play();
         switchScreen('firstPage');
     });
 }
@@ -76,7 +77,6 @@ if (backBtn) {
 const gamesBtn = document.getElementById('gamesBtn');
 if (gamesBtn) {
     gamesBtn.addEventListener('click', () => {
-        clickSound.play();
         switchScreen('gamesPage');
     });
 }
@@ -86,8 +86,8 @@ const acceptPrivacyBtn = document.getElementById('acceptPrivacy');
 if (acceptPrivacyBtn) {
     acceptPrivacyBtn.addEventListener('click', () => {
         clickSound.play();
-        localStorage.setItem('acceptPolicy', true);
         vibrate(100);
+        localStorage.setItem('acceptPolicy', true);
     });
 }
 
@@ -107,6 +107,7 @@ if (resetGameBtn) {
     resetGameBtn.addEventListener('click', () => {
         clickSound.play();
         vibrate(100);
+
         localStorage.clear();
         localStorage.setItem('extraPoints', 6);
 
@@ -122,8 +123,6 @@ if (resetGameBtn) {
 const okSettingsBtn = document.getElementById('okSettings');
 if (okSettingsBtn) {
     okSettingsBtn.addEventListener('click', () => {
-        clickSound.play();
-        vibrate(100);
         switchScreen('firstPage');
     });
 }
@@ -150,7 +149,6 @@ if (continueFailBtn) {
     continueFailBtn.addEventListener('click', () => {
         clickSound.play();
         vibrate(100);
-        runMusic();
     });
 }
 
@@ -158,8 +156,6 @@ if (continueFailBtn) {
 const closeBtn = document.getElementById('close_btn');
 if (closeBtn) {
     closeBtn.addEventListener('click', () => {
-        clickSound.play();
-        vibrate(100);
         switchScreen('menuPage');
     });
 }
@@ -168,9 +164,7 @@ if (closeBtn) {
 const firstPageTap = document.getElementById('firstPage');
 if (firstPageTap) {
     firstPageTap.addEventListener("click", () => {
-        // switchScreen('menuPage');
-        // switchScreen('mostWantedPage');
-        switchScreen('oldSaloonPage');
+        switchScreen('menuPage');
     });
 }
 
@@ -222,18 +216,6 @@ if (backOldSaloonBtn) {
     });
 }
 
-const useExtraPoints = document.getElementById('useExtraPoints');
-if (useExtraPoints) {
-    document.getElementById('useExtraPoints').addEventListener('click', () => {
-        tapSound.play();
-        runMusic();
-
-        let extraPoints = parseInt(localStorage.getItem('extraPoints')) || 0;
-        extraPoints = extraPoints - 2;
-        localStorage.setItem('extraPoints', extraPoints);
-    });
-}
-
 const settingsButton = document.getElementById('settingsButton');
 if (settingsButton) {
     settingsButton.addEventListener('click', () => {
@@ -247,15 +229,15 @@ if (settingsButton) {
 
 const startOldSaloonBtn = document.getElementById('startOldSaloonGame');
 if (startOldSaloonBtn) {
+    clickSound.play();
+    vibrate(100);
+
     startOldSaloonBtn.addEventListener('click', startGame);
 }
 
 const settingBtn = document.getElementById('settingBtn');
 if (settingBtn) {
     settingBtn.addEventListener('click', () => {
-        clickSound.play();
-        vibrate(100);
-
         clearInterval(timer); // Очищаем таймер при выборе ответа
         switchScreen('settings'); // Переход к экрану основных вопросов
     });
@@ -280,6 +262,9 @@ function showPreloader() {
 }
 
 function switchScreen(screenId, levelScore= 0) {
+    clickSound.play();
+    vibrate(100);
+
     const screens = document.querySelectorAll('.screen');
     showInfoBlock(false);
 
@@ -298,7 +283,7 @@ function switchScreen(screenId, levelScore= 0) {
         }
         if (screenId === 'failPage') {
             stopMusic();
-            showFailPage();
+            failSound.play();
             showInfoBlock(false);
         }
         if (screenId === 'spinJackPage') {
@@ -319,14 +304,12 @@ function switchScreen(screenId, levelScore= 0) {
 
 function showWinPage(levelScore) {
     const valueElement = document.getElementById('winValue');
-    const extraValueElement = document.getElementById('extraValue');
-
-    // winSound.play();
+    winSound.play();
 
     valueElement.innerHTML = `+${levelScore}`;
     valueElement.classList.remove('hidden');
-    // extraValueElement.classList.add('hidden');
-    // runMusic();
+
+    runMusic();
 }
 
 const continueBtn = document.getElementById("continue");
@@ -334,10 +317,7 @@ if (continueBtn) {
     continueBtn.addEventListener("click", () => {
         const selectedCheckbox = document.querySelector('input[name="image-checkbox"]:checked');
         if (selectedCheckbox) {
-            console.log("Выбрана картинка с value:", selectedCheckbox.value);
             switchScreen(selectedCheckbox.value); // Переход к экрану игры
-        } else {
-            console.log("Ничего не выбрано");
         }
     });
 }
@@ -351,10 +331,6 @@ window.adjustImages = function(selectedCheckbox) {
 
     const selectedImage = selectedCheckbox.nextElementSibling;
     selectedImage.style.transform = "scale(1.1)";
-}
-
-function showFailPage() {
-    failSound.play();
 }
 
 function updatePercentage(percentageElement, progress) {

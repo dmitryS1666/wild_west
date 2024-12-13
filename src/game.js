@@ -1,4 +1,4 @@
-import {runMusic, tapSound, timeOutSound} from './settings.js';
+import {runMusic, timeOutSound} from './settings.js';
 import {switchScreen} from './ui.js';
 
 localStorage.setItem('extraPoints', 6);
