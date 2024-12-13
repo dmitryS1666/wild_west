@@ -136,7 +136,6 @@ function endGameRoulette(winningSegment) {
     localStorage.setItem('score', parseFloat(score) + result);
     gameOverRoulette = true; // Игра завершена
 
-
     setTimeout(() => {
         if (result !== 0) {
             switchScreen('winPage', result)

@@ -17,6 +17,7 @@ import {checkFirstRunAndLoadData} from "./index";
 import { Plugins } from '@capacitor/core';
 import {setupRoulette} from "./mostWanted";
 import {setupSpinJack} from "./spinJack";
+import {startGame} from "./oldSaloon";
 
 const { App } = Plugins;
 
@@ -169,7 +170,7 @@ if (firstPageTap) {
     firstPageTap.addEventListener("click", () => {
         // switchScreen('menuPage');
         // switchScreen('mostWantedPage');
-        switchScreen('spinJackPage');
+        switchScreen('oldSaloonPage');
     });
 }
 
@@ -213,6 +214,14 @@ if (backRouletteBtn) {
     });
 }
 
+// BACK_OLD_SALOON
+const backOldSaloonBtn = document.getElementById('backOldSaloon');
+if (backOldSaloonBtn) {
+    backOldSaloonBtn.addEventListener("click", () => {
+        switchScreen('gamesPage');
+    });
+}
+
 const useExtraPoints = document.getElementById('useExtraPoints');
 if (useExtraPoints) {
     document.getElementById('useExtraPoints').addEventListener('click', () => {
@@ -234,6 +243,11 @@ if (settingsButton) {
         clearInterval(timer); // Очищаем таймер при выборе ответа
         switchScreen('settings'); // Переход к экрану основных вопросов
     });
+}
+
+const startOldSaloonBtn = document.getElementById('startOldSaloonGame');
+if (startOldSaloonBtn) {
+    startOldSaloonBtn.addEventListener('click', startGame);
 }
 
 const settingBtn = document.getElementById('settingBtn');
@@ -277,10 +291,6 @@ function switchScreen(screenId, levelScore= 0) {
         const targetScreen = document.getElementById(screenId);
         targetScreen.classList.remove('hidden');
 
-        let mainPoints = parseInt(localStorage.getItem('mainPoints')) || 0;
-        const scoreValue = document.getElementById("scoreValue");
-        scoreValue.textContent = `${mainPoints}`;
-
         if (screenId === 'winPage') {
             stopMusic();
             showWinPage(levelScore);
@@ -301,7 +311,6 @@ function switchScreen(screenId, levelScore= 0) {
         }
         if (screenId === 'oldSaloonPage') {
             showInfoBlock(true);
-            // setupRoulette();
         }
 
         document.getElementById('scoreValue').innerText = localStorage.getItem('score');

@@ -1,15 +1,7 @@
-import {runMusic, saveProgress, tapSound, timeOutSound} from './settings.js';
+import {runMusic, tapSound, timeOutSound} from './settings.js';
 import {switchScreen} from './ui.js';
 
-const MAX_QUESTIONS_PER_ROUND = 10;
-let mainPoints, extraPoints;
-
 localStorage.setItem('extraPoints', 6);
-
-// Функция для сброса прогресса
-function resetProgress() {
-    localStorage.removeItem('currentQuestionIndex'); // Удаляем индекс текущего вопроса
-}
 
 // Отображение основного вопроса игры
 export let timer; // Переменная для таймера

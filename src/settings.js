@@ -44,10 +44,6 @@ document.getElementById('toggle-vibration').addEventListener('change', (event) =
     saveSettings();
 });
 
-function saveProgress(currentQuestionIndex) {
-    localStorage.setItem('currentQuestionIndex', currentQuestionIndex);
-}
-
 function stopMusic() {
     if (!menuMusic.paused && menuMusic.currentTime > 0) {
         menuMusic.pause();
@@ -71,7 +67,6 @@ function vibrate(duration) {
 
 export {
     vibrate,
-    saveProgress,
     settings,
     loadSettings,
     saveSettings,

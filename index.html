@@ -26,7 +26,8 @@
                 <div id="scoreValue" class="scoreValue"></div>
             </div>
             <div id="extraPoint" style="z-index: 1000;">
-                <img src="res/wild_west/dead_life.png">
+                <!-- dead_life -->
+                <img src="res/wild_west/active_life.png">
                 <img src="res/wild_west/active_life.png">
                 <img src="res/wild_west/active_life.png">
             </div>
@@ -78,7 +79,7 @@
                 <img src="res/wild_west/most_wanted_logo.png" alt="Image 2">
             </label>
             <label class="checkbox-item">
-                <input type="radio" name="image-checkbox" value="old_saloon" class="image-checkbox" onchange="adjustImages(this)">
+                <input type="radio" name="image-checkbox" value="oldSaloonPage" class="image-checkbox" onchange="adjustImages(this)">
                 <img src="res/wild_west/old_saloon_logo.png" alt="Image 3">
             </label>
         </div>
@@ -244,49 +245,20 @@
     </div>
 
     <div id="oldSaloonPage" class="screen hidden">
-    </div>
-
-    <!-- .closed -->
-    <div id="questionGame" class="screen hidden">
-        <div id="timer" class="timer">
-            <img src="res/time.png"><span>00:12</span>
-        </div>
-        <div class="questionBody">
-            <div class="question">Question Question Question</div>
-            <div class="answers">
-                <div class="item" id="itemAGame">
-                    <div class="text"><b>A:</b> answer</div>
-                </div>
-                <div class="item" id="itemBGame">
-                    <div class="text"><b>B:</b> answer</div>
-                </div>
-                <div class="item" id="itemCGame">
-                    <div class="text"><b>C:</b> answer</div>
-                </div>
-                <div class="item" id="itemDGame">
-                    <div class="text"><b>D:</b> answer</div>
-                </div>
+        <div id="oldSaloonCanvas"></div>
+        <div id="startOldSaloonGame">
+            <div class="text blink">
+                <p>Tap to start</p>
             </div>
         </div>
-        <div class="hintGame">
-            <div id="fiftyOnFifty">
-                <span id="extraPoints"></span>
-            </div>
-            <div id="call">
-                <span id="extraPoints"></span>
-            </div>
-            <div id="audience">
-                <span id="extraPoints"></span>
-            </div>
-        </div>
-    </div>
-
-    <div id="game" class="screen hidden">
-        <div id="question-container">
-            <h2 id="question"></h2>
-            <ul id="answer-buttons">
-                <!-- Варианты ответов -->
-            </ul>
+        <div id="gameScoreOldSaloon">
+            <button id="backOldSaloon">
+                <img src="res/wild_west/back_button.png">
+            </button>
+            <button id="scoreGameOldSaloon">
+                <span id="scoreGameOS">0</span>
+                <img src="res/wild_west/empty_button.png">
+            </button>
         </div>
     </div>
 </div>
