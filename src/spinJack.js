@@ -177,5 +177,27 @@ function analyzeWinning() {
     }, 1000);
 }
 
+const minusBetRBtn = document.getElementById('minusBetSpinJack');
+if (minusBetRBtn) {
+    minusBetRBtn.addEventListener('click', () => {
+        let bet = document.getElementById('currentBetSpinJack');
+        if (bet.innerText > 0 && bet.innerText !== '10') {
+            bet.innerText = parseFloat(bet.innerText) - 10;
+        }
+    });
+}
+
+const plusBetRBtn = document.getElementById('plusBetSpinJack');
+if (plusBetRBtn) {
+    plusBetRBtn.addEventListener('click', () => {
+        let bet = document.getElementById('currentBetSpinJack');
+        let currentBet = parseFloat(bet.innerText);
+
+        if (currentBet + 10 <= score) {
+            bet.innerText = currentBet + 10;
+        }
+    });
+}
+
 // Обработчик нажатия кнопки
 document.getElementById('spinSpinJackButton').addEventListener('click', spinReels);

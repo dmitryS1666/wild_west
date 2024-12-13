@@ -160,6 +160,10 @@ const plusBetRBtn = document.getElementById('plusBetRoulette');
 if (plusBetRBtn) {
     plusBetRBtn.addEventListener('click', () => {
         let bet = document.getElementById('currentBetRoulette');
-        bet.innerText = parseFloat(bet.innerText) + 10;
+        let currentBet = parseFloat(bet.innerText);
+
+        if (currentBet + 10 <= score) {
+            bet.innerText = currentBet + 10;
+        }
     });
 }
