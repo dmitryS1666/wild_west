@@ -1,3 +1,5 @@
+import {switchScreen} from "./ui";
+
 const symbols = [
     'res/wild_west/spinJack/bank.png',
     'res/wild_west/spinJack/bottle.png',
@@ -12,6 +14,7 @@ const symbols = [
 let reels = [[], [], [], []]; // Состояние барабанов
 let spinning = false; // Флаг вращения
 let reelElements = [];
+let score = localStorage.getItem('score') || 0;
 
 export function setupSpinJack() {
     reelElements = [
@@ -20,6 +23,9 @@ export function setupSpinJack() {
         document.getElementById('reel3'),
         document.getElementById('reel4'),
     ];
+
+    document.getElementById('currentBetSpinJack').textContent = 10; // Заглушка ставки
+    document.getElementById('scoreValue').textContent = score;
 
     // Инициализация
     initializeReels();
@@ -150,15 +156,25 @@ function analyzeWinning() {
 
     let winAmount = 0;
     if (maxCount === 4) {
-        winAmount = 1; // 4 одинаковых
+        winAmount = 2; // 4 одинаковых
     } else if (maxCount === 3) {
-        winAmount = 0.75; // 3 одинаковых
+        winAmount = 1.5; // 3 одинаковых
     } else if (maxCount === 2) {
-        winAmount = 0.5; // 2 одинаковых
+        winAmount = 1; // 2 одинаковых
     }
 
-    console.log(`Winning analysis: ${centralRowSymbols.join(' | ')}`);
-    console.log(`Winning amount: ${winAmount}`);
+    let currentBet = document.getElementById('currentBetSpinJack').innerText; // Заглушка ставки
+    let result = parseFloat(winAmount) * parseFloat(currentBet);
+
+    localStorage.setItem('score', parseFloat(score) + result);
+
+    setTimeout(() => {
+        if (result !== 0) {
+            switchScreen('winPage', result)
+        } else  {
+            switchScreen('failPage')
+        }
+    }, 1000);
 }
 
 // Обработчик нажатия кнопки
