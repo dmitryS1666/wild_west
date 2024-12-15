@@ -3,6 +3,8 @@ import {showPreloader, switchScreen} from "./ui";
 
 import {App} from "@capacitor/app";
 
+let screenHistory = []; // Массив для хранения истории экранов
+
 window.displayGame = displayGame;
 window.displayLockedGame = displayLockedGame;
 window.displayDefaultGames = displayDefaultGames;
@@ -16,6 +18,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // } else {
         switchScreen('firstPage');
     // }
+
+
+    const musicToggle = document.getElementById('toggle-music'); // Чекбокс для музыки
+    const menuMusic = document.getElementById('menuMusic'); // Элемент аудио
+
+    // Загрузка состояния музыки из localStorage (по умолчанию включена)
+    const isMusicEnabled = localStorage.getItem('musicEnabled') !== 'false'; // Если null, считаем, что включена
+    musicToggle.checked = isMusicEnabled; // Синхронизация переключателя с состоянием
+
+    // Функция обновления состояния музыки
+    function updateMusicState(enabled) {
+        if (enabled) {
+            menuMusic.volume = 0.3;
+            menuMusic.play(); // Воспроизвести музыку
+        } else {
+            menuMusic.pause(); // Остановить музыку
+        }
+        localStorage.setItem('musicEnabled', enabled); // Сохранить состояние
+    }
+
+    // Инициализация воспроизведения
+    updateMusicState(isMusicEnabled);
+
+    // Обработчик изменения чекбокса
+    musicToggle.addEventListener('change', (event) => {
+        updateMusicState(event.target.checked);
+    });
 });
 
 function loadBanner() {
@@ -113,6 +142,31 @@ App.addListener('backButton', ({canGoBack}) => {
     stopMusic(); // Явно останавливаем музыку перед минимизацией приложения
     App.minimizeApp();
 });
+
+// Обработчик кнопки "Назад"
+App.addListener('backButton', ({ canGoBack }) => {
+    stopMusic(); // Останавливаем музыку
+
+    if (screenHistory.length > 1) {
+        screenHistory.pop(); // Убираем текущий экран из стека
+        const previousScreen = screenHistory[screenHistory.length - 1]; // Предыдущий экран
+        switchScreen(previousScreen); // Переход на предыдущий экран
+    } else {
+        App.minimizeApp(); // Если больше нельзя вернуться назад, минимизируем приложение
+    }
+});
+
+// Пример вызова switchScreen для переходов
+document.getElementById('settingsButton').addEventListener('click', () => {
+    switchScreen('settings');
+});
+document.getElementById('back').addEventListener('click', () => {
+    switchScreen('menuPage');
+});
+
+
+
+
 
 // Слушатель для восстановления/сворачивания приложения, включая кнопку "Домой"
 App.addListener('appStateChange', ({isActive}) => {

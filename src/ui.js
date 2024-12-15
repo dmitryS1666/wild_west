@@ -1,15 +1,10 @@
 import {
-    showInfoBlock,
-    timer,
-} from './game.js';
-
-import {
     failSound,
     runMusic,
     stopMusic,
     winSound,
-    clickSound,
-    vibrate
+    clickEffect,
+    selectEffect
 } from './settings'
 
 import {checkFirstRunAndLoadData} from "./index";
@@ -24,8 +19,7 @@ const { App } = Plugins;
 const readPrivacyPolicyBtn = document.getElementById('readPrivacyPolicy');
 if (readPrivacyPolicyBtn) {
     readPrivacyPolicyBtn.addEventListener('click', () => {
-        clickSound.play();
-        vibrate(100);
+        clickEffect();
 
         const openInExternalBrowser = async () => {
             window.open('https://appwildwest.com/policy', '_system'); // открывает внешний браузер
@@ -39,8 +33,7 @@ if (readPrivacyPolicyBtn) {
 const privacyBtn = document.getElementById('privacyBtn');
 if (privacyBtn) {
     privacyBtn.addEventListener('click', () => {
-        clickSound.play();
-        vibrate(100);
+        clickEffect();
 
         const openInExternalBrowser = async () => {
             window.open('https://appwildwest.com/policy', '_system'); // открывает внешний браузер
@@ -54,8 +47,7 @@ if (privacyBtn) {
 const privacyPolicyBtn = document.getElementById('privacyPolicy');
 if (privacyPolicyBtn) {
     privacyPolicyBtn.addEventListener('click', () => {
-        clickSound.play();
-        vibrate(100);
+        clickEffect();
 
         const openInExternalBrowser = async () => {
             window.open('https://appwildwest.com/policy', '_system'); // открывает внешний браузер
@@ -66,7 +58,7 @@ if (privacyPolicyBtn) {
 }
 
 // BACK
-const backBtn = document.getElementById('back');
+const backBtn = document.getElementById('backMenu');
 if (backBtn) {
     backBtn.addEventListener('click', () => {
         switchScreen('firstPage');
@@ -85,8 +77,7 @@ if (gamesBtn) {
 const acceptPrivacyBtn = document.getElementById('acceptPrivacy');
 if (acceptPrivacyBtn) {
     acceptPrivacyBtn.addEventListener('click', () => {
-        clickSound.play();
-        vibrate(100);
+        clickEffect();
         localStorage.setItem('acceptPolicy', true);
     });
 }
@@ -95,8 +86,7 @@ if (acceptPrivacyBtn) {
 const playBtn = document.getElementById('playBtn');
 if (playBtn) {
     playBtn.addEventListener('click', () => {
-        clickSound.play();
-        vibrate(100);
+        clickEffect();
         checkFirstRunAndLoadData();
     });
 }
@@ -105,11 +95,9 @@ if (playBtn) {
 const resetGameBtn = document.getElementById('resetGame');
 if (resetGameBtn) {
     resetGameBtn.addEventListener('click', () => {
-        clickSound.play();
-        vibrate(100);
+        clickEffect();
 
         localStorage.clear();
-        localStorage.setItem('extraPoints', 6);
 
         // Показать уведомление
         const resetNotification = document.getElementById('resetNotification');
@@ -120,6 +108,7 @@ if (resetGameBtn) {
         }, 1500);
     });
 }
+
 const okSettingsBtn = document.getElementById('okSettings');
 if (okSettingsBtn) {
     okSettingsBtn.addEventListener('click', () => {
@@ -130,16 +119,14 @@ if (okSettingsBtn) {
 const toggleMusicBtn = document.getElementById('toggle-music');
 if (toggleMusicBtn) {
     toggleMusicBtn.addEventListener('click', () => {
-        clickSound.play();
-        vibrate(100);
+        clickEffect();
     });
 }
 
 const toggleVibrationBtn = document.getElementById('toggle-vibration');
 if (toggleVibrationBtn) {
     toggleVibrationBtn.addEventListener('click', () => {
-        clickSound.play();
-        vibrate(100);
+        clickEffect();
     });
 }
 
@@ -147,8 +134,7 @@ if (toggleVibrationBtn) {
 const continueFailBtn = document.getElementById('continueFail');
 if (continueFailBtn) {
     continueFailBtn.addEventListener('click', () => {
-        clickSound.play();
-        vibrate(100);
+        clickEffect();
     });
 }
 
@@ -160,7 +146,7 @@ if (closeBtn) {
     });
 }
 
-//
+// TAP to MENU
 const firstPageTap = document.getElementById('firstPage');
 if (firstPageTap) {
     firstPageTap.addEventListener("click", () => {
@@ -219,26 +205,24 @@ if (backOldSaloonBtn) {
 const settingsButton = document.getElementById('settingsButton');
 if (settingsButton) {
     settingsButton.addEventListener('click', () => {
-        clickSound.play();
-        vibrate(100);
+        clickEffect();
 
-        clearInterval(timer); // Очищаем таймер при выборе ответа
         switchScreen('settings'); // Переход к экрану основных вопросов
     });
 }
 
 const startOldSaloonBtn = document.getElementById('startOldSaloonGame');
 if (startOldSaloonBtn) {
-    clickSound.play();
-    vibrate(100);
-
     startOldSaloonBtn.addEventListener('click', startGame);
 }
+
+document.querySelector('.checkbox-container').addEventListener('change', (event) => {
+    selectEffect();
+});
 
 const settingBtn = document.getElementById('settingBtn');
 if (settingBtn) {
     settingBtn.addEventListener('click', () => {
-        clearInterval(timer); // Очищаем таймер при выборе ответа
         switchScreen('settings'); // Переход к экрану основных вопросов
     });
 }
@@ -251,19 +235,29 @@ function showPreloader() {
             percentageElement.textContent = '0%'; // Сбрасываем текст
             let progress = 0;
             updatePercentage(percentageElement, progress);
-        // }, 500);
         }, 200);
 
         setTimeout(() => {
             $(`#preloaderPage`).fadeOut(500, resolve); // Вызов resolve после завершения fadeOut
-        // }, 1000);
         }, 300);
     });
 }
 
+function showInfoBlock(extraPoints) {
+    const infoBlock = document.getElementById('containerConfig');
+    infoBlock.classList.remove('hidden');
+
+    const extraPointsBlock = document.getElementById('extraPoint');
+
+    if (extraPoints) {
+        extraPointsBlock.classList.remove('hidden');
+    } else {
+        extraPointsBlock.classList.add('hidden');
+    }
+}
+
 function switchScreen(screenId, levelScore= 0) {
-    clickSound.play();
-    vibrate(100);
+    clickEffect();
 
     const screens = document.querySelectorAll('.screen');
     showInfoBlock(false);
@@ -283,8 +277,10 @@ function switchScreen(screenId, levelScore= 0) {
         }
         if (screenId === 'failPage') {
             stopMusic();
+            failSound.volume = 0.5;
             failSound.play();
             showInfoBlock(false);
+            runMusic();
         }
         if (screenId === 'spinJackPage') {
             showInfoBlock(false);
@@ -304,6 +300,8 @@ function switchScreen(screenId, levelScore= 0) {
 
 function showWinPage(levelScore) {
     const valueElement = document.getElementById('winValue');
+
+    winSound.volume = 0.5;
     winSound.play();
 
     valueElement.innerHTML = `+${levelScore}`;

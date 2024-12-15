@@ -2,8 +2,8 @@
 // ------------------ Рулетка ------------------ //
 // --------------------------------------------- //
 
-import {clickSound, vibrate} from "./settings";
 import {switchScreen} from "./ui";
+import {rouletteEffect} from "./settings";
 
 const rouletteSegments = [3.2, 3.2, 1.2, 2.2, 3.2, 2.2, 0, 5.0];
 let rouletteCanvas, rouletteCtx;
@@ -74,6 +74,8 @@ function spinRoulette() {
     if (isSpinning) return; // Блокируем повторное вращение
     isSpinning = true;
     gameOverRoulette = false;
+
+    rouletteEffect();
 
     const spinDuration = 4000; // Время вращения в миллисекундах
     const segmentAngle = 360 / rouletteSegments.length; // Угол одного сектора

@@ -387,7 +387,7 @@ html, body, button, p, span {
     top: 50%;
 }
 
-#menuPage #back,
+#menuPage #backMenu,
 #settings #close_btn,
 #gamesPage #close_btn,
 #gamesPage #continue,
@@ -398,7 +398,7 @@ html, body, button, p, span {
     width: 100%;
 }
 
-#menuPage #back img,
+#menuPage #backMenu img,
 #settings #close_btn img,
 #gamesPage #close_btn img,
 #settings #okSettings img {
@@ -770,34 +770,6 @@ input:checked + .switch:active::before {
 
 /*------------END CANVA + SETTING----------------*/
 
-/*-----------------------TIMER-----------------------*/
-#timer {
-    margin-top: 5%;
-    background: #fdfbce;
-    color: #d8856d;
-    font-weight: bold;
-    width: 80px;
-    border-radius: 50px;
-    height: 30px;
-    text-align: center;
-    left: 50%;
-    position: relative;
-    transform: translateX(-50%);
-}
-
-#timer span{
-    margin-top: 6px;
-    float: right;
-    padding-right: 10px;
-    font-size: 17px;
-}
-
-#timer img{
-    width: 20px;
-    margin-top: 2px;
-}
-/*----------------------END TIMER--------------------*/
-
 /*----------------MOST WANTED PAGE----------------------*/
 #mostWantedPage {
     position: absolute;
@@ -946,6 +918,7 @@ input:checked + .switch:active::before {
     bottom: 0;
     right: 0;
     margin: auto;
+    z-index: 2;
 }
 
 .betControlSpinJack {
@@ -1003,6 +976,15 @@ input:checked + .switch:active::before {
     right: 0;
 }
 
+.highlight {
+    background: url(../res/wild_west/flash.png) no-repeat center center;
+    animation: flashAnimation 2s infinite ease-in-out;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+    box-shadow: inset 0 0 25px rgb(35 34 35), inset 0 0 25px rgb(35 34 35), inset 0 0 25px rgb(35 34 35), inset 0 0 25px rgb(35 34 35);
+}
 /*---------------END SPIN JACK PAGE--------------------*/
 
 

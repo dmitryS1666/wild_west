@@ -1,4 +1,5 @@
 import {switchScreen} from "./ui";
+import {slotEffect} from "./settings";
 
 const symbols = [
     'res/wild_west/spinJack/bank.png',
@@ -91,6 +92,7 @@ function spinReels() {
 
 // Начать вращение барабана
 function startReelSpin(index) {
+    slotEffect();
     const intervalId = setInterval(() => {
         const first = reels[index].shift(); // Убираем первый элемент
         reels[index].push(getRandomSymbol()); // Добавляем новый случайный символ
@@ -168,6 +170,10 @@ function analyzeWinning() {
 
     localStorage.setItem('score', parseFloat(score) + result);
 
+    if (result !== 0) {
+        highlightThirdRow();
+    }
+
     setTimeout(() => {
         if (result !== 0) {
             switchScreen('winPage', result)
@@ -175,6 +181,24 @@ function analyzeWinning() {
             switchScreen('failPage')
         }
     }, 1000);
+}
+
+function highlightThirdRow() {
+    // Получаем все элементы барабанов
+    const reels = document.querySelectorAll('.reel');
+
+    // Проходим по каждому барабану
+    reels.forEach(reel => {
+        // Получаем все строки в текущем барабане
+        const rows = reel.querySelectorAll('.item');
+
+        // Если третья строка существует, добавляем к ней класс для подсветки
+        if (rows[2]) {
+            const thirdCell = document.createElement('div'); // Создаем третью ячейку, если ее нет
+            thirdCell.classList.add('highlight'); // Добавляем базовый класс и эффект
+            rows[2].appendChild(thirdCell); // Добавить третью ячейку в барабан
+        }
+    });
 }
 
 const minusBetRBtn = document.getElementById('minusBetSpinJack');

@@ -1,5 +1,6 @@
 // Переменные для игры
 import {switchScreen} from "./ui";
+import {tapEffect, shootEffect, hitEffect} from "./settings";
 
 let gameInterval;
 let lives = 3;
@@ -18,6 +19,8 @@ const objects = [
 
 // Функция для запуска игры
 export function startGame() {
+    tapEffect();
+
     let tapText = document.getElementById('startOldSaloonGame');
     tapText.style.display = 'none';
 
@@ -69,11 +72,15 @@ export function startGame() {
         }, 50);
 
         // Обработка ловли объекта
-        fallingObject.addEventListener('click', () => {
+        fallingObject.addEventListener('click', (event) => {
             if (!isGameRunning) return;
             clearInterval(fallInterval);
             gameArea.removeChild(fallingObject);
             result += parseInt(object.weight);
+
+            // Проигрываем звуковой эффект попадания
+            hitEffect();
+
             document.getElementById('scoreGameOS').innerText = `${result}`;
         });
     }, 1000);
@@ -89,9 +96,9 @@ function endGame() {
 
     setTimeout(() => {
         if (result !== 0) {
-            switchScreen('winPage', result)
-        } else  {
-            switchScreen('failPage')
+            switchScreen('winPage', result);
+        } else {
+            switchScreen('failPage');
         }
 
         let tapText = document.getElementById('startOldSaloonGame');
