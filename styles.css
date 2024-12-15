@@ -3,6 +3,11 @@
     src: url(../res/font/Angkor-Regular.ttf);
 }
 
+@font-face {
+    font-family: Montserrat;
+    src: url(../res/font/Montserrat-Regular.ttf);
+}
+
 html, body {
     width: 100%;
     height: 100%;
@@ -23,6 +28,7 @@ html, body, button, p, span {
 }
 
 /*--------------- BLUR ------------------*/
+#acceptNotification,
 #resetNotification {
     position: fixed;
     top: 0;
@@ -36,6 +42,7 @@ html, body, button, p, span {
     transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
+#acceptNotification .overlay,
 #resetNotification .overlay {
     position: absolute;
     top: 0;
@@ -46,6 +53,7 @@ html, body, button, p, span {
     backdrop-filter: blur(2px);
 }
 
+#acceptNotification .notificationText,
 #resetNotification .notificationText {
     position: absolute;
     color: #fff;
@@ -312,6 +320,7 @@ html, body, button, p, span {
 .blink {
     animation: blink 2s infinite; /* Параметры анимации */
 }
+
 @keyframes blink {
     from { opacity: 0.8; /* Непрозрачный текст */ }
     to { opacity: 0.3; /* Прозрачный текст */ }
@@ -321,7 +330,7 @@ html, body, button, p, span {
 
 /*------------- MENU PAGE ----------------*/
 #menuPage, #settings,
-#gamesPage {
+#gamesPage, #acceptPage {
     position: absolute;
 
     top: 0;
@@ -338,6 +347,7 @@ html, body, button, p, span {
 
 #menuPage:before,
 #settings:before,
+#acceptPage:before,
 #gamesPage:before {
     content: '';
     display: block;
@@ -354,6 +364,7 @@ html, body, button, p, span {
 
 #menuPage .title,
 #settings .title,
+#acceptPage .title,
 #gamesPage .title {
     font-size: 62px;
     color: #FCDFC1;
@@ -388,20 +399,24 @@ html, body, button, p, span {
 }
 
 #menuPage #backMenu,
-#settings #close_btn,
-#gamesPage #close_btn,
+#settings #closeSettings,
+#acceptPage #closeAcceptPage,
+#gamesPage #closeSettings,
 #gamesPage #continue,
-#settings #okSettings {
+#settings #resetGame,
+#acceptPage #okAcceptPage {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 100%;
+    /*width: 100%;*/
 }
 
 #menuPage #backMenu img,
-#settings #close_btn img,
-#gamesPage #close_btn img,
-#settings #okSettings img {
+#settings #closeSettings img,
+#acceptPage #closeAcceptPage img,
+#gamesPage #closeSettings img,
+#settings #resetGame img,
+#acceptPage #okAcceptPage img {
     /*width: 50%;*/
 }
 /*------------- MENU PAGE ----------------*/
@@ -445,8 +460,10 @@ html, body, button, p, span {
 
 /*----------- SETTINGS PAGE --------------*/
 
-#settings #okSettings {
-    text-align: right;
+#settings #resetGame,
+#acceptPage #okAcceptPage {
+    right: 0;
+    left: unset;
 }
 
 .switch {
@@ -521,6 +538,46 @@ input:checked + .switch:active::before {
     text-decoration: underline;
     font-family: "Angkor", serif;
     font-size: 18px;
+}
+
+.subTitle p {
+    font-size: 32px;
+    color: white;
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    top: 25%;
+}
+
+#acceptPage .text {
+    position: absolute;
+    top: 35%;
+    text-align: center;
+    width: 100%;
+    font-size: 20px;
+    font-weight: 200;
+    color: white;
+}
+
+#acceptPage .rawThird {
+    position: absolute;
+    top: 55%;
+    text-align: center;
+    width: 100%;
+}
+
+#acceptPage .rawThird button{
+    border: none;
+    outline: none;
+    background: none;
+    color: white;
+    font-size: 20px;
+    font-family: Montserrat, serif;
+    text-decoration: underline;
+}
+
+#acceptPage .text p {
+    font-family: Montserrat, serif;
 }
 
 /*----------- SETTINGS PAGE --------------*/
@@ -1091,6 +1148,7 @@ input:checked + .switch:active::before {
     font-weight: 400;
 }
 
+#acceptPageButton,
 #settingsButton {
     border: solid 2px #F6AA73;
     border-radius: 5px;
@@ -1100,6 +1158,7 @@ input:checked + .switch:active::before {
     background: #330c0d;
 }
 
+#acceptPageButton img,
 #settingsButton img {
     width: 80%;
     margin-top: 10px;

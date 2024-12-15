@@ -10,10 +10,7 @@ let slotSound = new Audio('res/audio/slot_sound.mp3');
 
 const menuMusic = document.getElementById('menuMusic');
 
-let settings = {
-    music: true,
-    vibration: true,
-};
+let settings = localStorage.getItem('wildWestSettings');
 
 // Загрузка настроек из LocalStorage
 function loadSettings() {

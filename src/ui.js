@@ -4,7 +4,8 @@ import {
     stopMusic,
     winSound,
     clickEffect,
-    selectEffect
+    selectEffect,
+    settings
 } from './settings'
 
 import {checkFirstRunAndLoadData} from "./index";
@@ -73,12 +74,19 @@ if (gamesBtn) {
     });
 }
 
-// подтвердить политику
-const acceptPrivacyBtn = document.getElementById('acceptPrivacy');
-if (acceptPrivacyBtn) {
-    acceptPrivacyBtn.addEventListener('click', () => {
-        clickEffect();
+// Open GAMES PAGE
+const okAcceptPageBtn = document.getElementById('okAcceptPage');
+if (okAcceptPageBtn) {
+    okAcceptPageBtn.addEventListener('click', () => {
+        // Показать уведомление
+        const acceptNotification = document.getElementById('acceptNotification');
+        acceptNotification.classList.remove('hidden');
+
         localStorage.setItem('acceptPolicy', true);
+
+        setTimeout(() => {
+            acceptNotification.classList.add('hidden');
+        }, 1500);
     });
 }
 
@@ -135,6 +143,22 @@ const continueFailBtn = document.getElementById('continueFail');
 if (continueFailBtn) {
     continueFailBtn.addEventListener('click', () => {
         clickEffect();
+    });
+}
+
+// BACK button - closeAcceptPageBtn
+const closeAcceptPageBtn = document.getElementById('closeAcceptPage');
+if (closeAcceptPageBtn) {
+    closeAcceptPageBtn.addEventListener('click', () => {
+        switchScreen('menuPage');
+    });
+}
+
+// BACK button - closeSettingsBtn
+const closeSettingsBtn = document.getElementById('closeSettings');
+if (closeSettingsBtn) {
+    closeSettingsBtn.addEventListener('click', () => {
+        switchScreen('menuPage');
     });
 }
 
@@ -256,7 +280,7 @@ function showInfoBlock(extraPoints) {
     }
 }
 
-function switchScreen(screenId, levelScore= 0) {
+function switchScreen(screenId, levelScore= 0, winBg = 'default') {
     clickEffect();
 
     const screens = document.querySelectorAll('.screen');
@@ -272,13 +296,15 @@ function switchScreen(screenId, levelScore= 0) {
 
         if (screenId === 'winPage') {
             stopMusic();
-            showWinPage(levelScore);
+            showWinPage(levelScore, winBg);
             showInfoBlock(false);
         }
         if (screenId === 'failPage') {
             stopMusic();
-            failSound.volume = 0.5;
-            failSound.play();
+            if (settings.music) {
+                failSound.volume = 0.5;
+                failSound.play();
+            }
             showInfoBlock(false);
             runMusic();
         }
@@ -298,11 +324,17 @@ function switchScreen(screenId, levelScore= 0) {
     });
 }
 
-function showWinPage(levelScore) {
+function showWinPage(levelScore, bg) {
     const valueElement = document.getElementById('winValue');
+    const winPage = document.getElementById('winPage');
 
-    winSound.volume = 0.5;
-    winSound.play();
+    winPage.style.background = bg;
+    winPage.style.backgroundSize = 'cover';
+
+    if (settings.music) {
+        winSound.volume = 0.5;
+        winSound.play();
+    }
 
     valueElement.innerHTML = `+${levelScore}`;
     valueElement.classList.remove('hidden');

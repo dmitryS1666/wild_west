@@ -16,35 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // if (window.NetworkStatusController.isConnectedToInternet()) {
     //     loadBanner();
     // } else {
-        switchScreen('firstPage');
+        checkFirstRunAndLoadData();
     // }
-
-
-    const musicToggle = document.getElementById('toggle-music'); // Чекбокс для музыки
-    const menuMusic = document.getElementById('menuMusic'); // Элемент аудио
-
-    // Загрузка состояния музыки из localStorage (по умолчанию включена)
-    const isMusicEnabled = localStorage.getItem('musicEnabled') !== 'false'; // Если null, считаем, что включена
-    musicToggle.checked = isMusicEnabled; // Синхронизация переключателя с состоянием
-
-    // Функция обновления состояния музыки
-    function updateMusicState(enabled) {
-        if (enabled) {
-            menuMusic.volume = 0.3;
-            menuMusic.play(); // Воспроизвести музыку
-        } else {
-            menuMusic.pause(); // Остановить музыку
-        }
-        localStorage.setItem('musicEnabled', enabled); // Сохранить состояние
-    }
-
-    // Инициализация воспроизведения
-    updateMusicState(isMusicEnabled);
-
-    // Обработчик изменения чекбокса
-    musicToggle.addEventListener('change', (event) => {
-        updateMusicState(event.target.checked);
-    });
 });
 
 function loadBanner() {
@@ -126,8 +99,11 @@ export function checkFirstRunAndLoadData() {
     let acceptPrivacy = localStorage.getItem('acceptPolicy');
 
     if (acceptPrivacy) {
-        loadSettings();
+        switchScreen('firstPage');
     } else {
+        localStorage.setItem('wildWestSettings', JSON.stringify({ music: true, vibration: true }));
+        localStorage.setItem('score', 1000);
+
         switchScreen('acceptPage');
     }
 }

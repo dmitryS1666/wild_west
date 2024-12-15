@@ -176,7 +176,7 @@ function analyzeWinning() {
 
     setTimeout(() => {
         if (result !== 0) {
-            switchScreen('winPage', result)
+            switchScreen('winPage', result, 'url(../res/wild_west/spin_jack_bg.png) no-repeat')
         } else  {
             switchScreen('failPage')
         }

@@ -140,7 +140,7 @@ function endGameRoulette(winningSegment) {
 
     setTimeout(() => {
         if (result !== 0) {
-            switchScreen('winPage', result)
+            switchScreen('winPage', result, 'url(../res/wild_west/most_wanted_bg.png) no-repeat')
         } else  {
             switchScreen('failPage')
         }

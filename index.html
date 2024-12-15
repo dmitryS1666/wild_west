@@ -14,6 +14,11 @@
 <div id="app">
     <audio id="menuMusic" src="res/audio/sound_menu_bg.mp3" loop></audio>
 
+    <div id="acceptNotification" class="screen hidden">
+        <div class="overlay"></div>
+        <div class="notificationText">ACCEPTED</div>
+    </div>
+
     <div id="resetNotification" class="screen hidden">
         <div class="overlay"></div>
         <div class="notificationText">Score has been reset</div>
@@ -36,7 +41,7 @@
             </div>
         </div>
     </div>
-    <div id="firstPage" class="screen">
+    <div id="firstPage" class="screen hidden">
         <div id="character">
             <img src="res/wild_west/logo.png">
         </div>
@@ -107,21 +112,28 @@
             </div>
         </div>
     </div>
+
     <div id="acceptPage" class="screen hidden">
-        <div class="canva privacy">
-            <div class="title">
-                <p>Privacy policy</p>
-            </div>
-            <div class="body">
-                <div class="raw" style="text-align: center; margin-top: 45%;">
-                    <button id="readPrivacyPolicy" class="reset_button">Read privacy</button>
-                </div>
-                <div class="raw">
-                    <button id="acceptPrivacy" class="ok_button">
-                        <img src="res/accept_button.png">
-                    </button>
-                </div>
-            </div>
+        <div class="title">PRIVACY</div>
+
+        <div class="subTitle">
+            <p>Privacy Policy</p>
+        </div>
+        <div class="text">
+            <p>you can read our<br>privacy policy</p>
+        </div>
+
+        <div class="rawThird">
+            <button id="readPrivacyPolicy" class="reset_button">
+                Privacy policy
+            </button>
+        </div>
+
+        <div id="closeAcceptPage">
+            <img src="res/wild_west/back_button.png">
+        </div>
+        <div id="okAcceptPage">
+            <img src="res/wild_west/accept_button.png">
         </div>
     </div>
 
@@ -140,16 +152,11 @@
             <label class="switch" for="toggle-vibration"></label>
         </div>
 
-        <div class="switchRawThird">
-            <button id="resetGame" class="reset_button">Reset score</button>
-            <button id="" class="reset_button">Privacy policy</button>
-        </div>
-
-        <div id="close_btn">
+        <div id="closeSettings">
             <img src="res/wild_west/back_button.png">
         </div>
-        <div id="okSettings">
-            <img src="res/wild_west/accept_button.png">
+        <div id="resetGame">
+            <img src="res/wild_west/reset_button.png">
         </div>
     </div>
 

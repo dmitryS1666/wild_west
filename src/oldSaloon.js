@@ -96,7 +96,7 @@ function endGame() {
 
     setTimeout(() => {
         if (result !== 0) {
-            switchScreen('winPage', result);
+            switchScreen('winPage', result, 'url(../res/wild_west/old_saloon_bg.png) no-repeat');
         } else {
             switchScreen('failPage');
         }
