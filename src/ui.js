@@ -87,6 +87,8 @@ if (okAcceptPageBtn) {
         setTimeout(() => {
             acceptNotification.classList.add('hidden');
         }, 1500);
+
+        switchScreen('firstPage');
     });
 }
 
