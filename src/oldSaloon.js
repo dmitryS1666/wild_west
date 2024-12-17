@@ -1,5 +1,5 @@
 // Переменные для игры
-import {switchScreen} from "./ui";
+import {isCurrentScreen, switchScreen} from "./ui";
 import {tapEffect, shootEffect, hitEffect} from "./settings";
 
 let gameInterval;
@@ -88,22 +88,34 @@ export function startGame() {
 
 // Функция для завершения игры
 function endGame() {
+    let skipResult = false;
     clearInterval(gameInterval);
     isGameRunning = false;
+
     const gameArea = document.getElementById('oldSaloonCanvas');
-    gameArea.innerHTML = ''; // Удаляем все оставшиеся объекты
-    localStorage.setItem('score', parseFloat(score) + result);
+    gameArea.innerHTML = ''; // Удаляем все объекты
 
-    setTimeout(() => {
-        if (result !== 0) {
-            switchScreen('winPage', result, 'url(../res/wild_west/old_saloon_bg.png) no-repeat');
-        } else {
-            switchScreen('failPage');
-        }
+    // Проверка, находится ли пользователь на игровом экране
+    if (!isCurrentScreen('oldSaloonCanvas')) {
+        skipResult = true; // Принудительно пропускаем результат, если экран сменился
+    }
 
-        let tapText = document.getElementById('startOldSaloonGame');
-        tapText.style.display = 'block';
-    }, 1000);
+    // Проверяем, нужно ли показывать результат и обновлять счёт
+    if (!skipResult) {
+        localStorage.setItem('score', parseFloat(score) + result);
+
+        setTimeout(() => {
+            localStorage.setItem('lastGame', 'oldSaloonPage');
+
+            if (result !== 0) {
+                switchScreen('winPage', result, 'url(../res/wild_west/old_saloon_bg.png) no-repeat');
+            } else {
+                switchScreen('failPage');
+            }
+            let tapText = document.getElementById('startOldSaloonGame');
+            tapText.style.display = 'block';
+        }, 1000);
+    }
 }
 
 // Функция для потери жизни

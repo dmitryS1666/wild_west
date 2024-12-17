@@ -2,13 +2,13 @@
 // ------------------ Рулетка ------------------ //
 // --------------------------------------------- //
 
-import {switchScreen} from "./ui";
+import {isCurrentScreen, switchScreen} from "./ui";
 import {rouletteEffect} from "./settings";
 
 const rouletteSegments = [3.2, 3.2, 1.2, 2.2, 3.2, 2.2, 0, 5.0];
 let rouletteCanvas, rouletteCtx;
 let isSpinning = false; // Флаг для отслеживания вращения рулетки
-let score = localStorage.getItem('score') || 0;
+let score;
 let gameOverRoulette = false; // Флаг для отслеживания состояния игры
 
 const rouletteImage = new Image();
@@ -30,6 +30,7 @@ export function setupRoulette() {
 
     // Устанавливаем начальные значения заглушек
     document.getElementById('currentBetRoulette').textContent = 10; // Заглушка ставки
+    score = localStorage.getItem('score') || 0;
     document.getElementById('scoreValue').textContent = score;
 }
 
@@ -71,8 +72,11 @@ function drawPointer() {
 
 // Функция для запуска вращения рулетки
 function spinRoulette() {
+    const spinButton = document.getElementById('spinButton'); // Получаем кнопку старта
+
     if (isSpinning) return; // Блокируем повторное вращение
     isSpinning = true;
+    spinButton.disabled = true; // Блокируем кнопку старта
     gameOverRoulette = false;
 
     rouletteEffect();
@@ -118,7 +122,7 @@ function spinRoulette() {
             // После остановки обработка победного сектора
             isSpinning = false;
             if (!gameOverRoulette) {
-                endGameRoulette(winningSegment); // Вывод результата
+                endGameRoulette(winningSegment, spinButton); // Передаём кнопку для разблокировки
             }
         }
     }
@@ -127,24 +131,38 @@ function spinRoulette() {
 }
 
 // Функция завершения игры
-function endGameRoulette(winningSegment) {
+function endGameRoulette(winningSegment, spinButton) {
     let currentBet = document.getElementById('currentBetRoulette').innerText; // Заглушка ставки
-    let result;
-
+    let skipResult = false;
     let rate = rouletteSegments[winningSegment];
 
-    result = parseFloat(rate) * parseFloat(currentBet);
+    let result = parseFloat(rate) * parseFloat(currentBet);
+
+    score = localStorage.getItem('score') || 0;
+    document.getElementById('scoreValue').textContent = score;
 
     localStorage.setItem('score', parseFloat(score) + result);
     gameOverRoulette = true; // Игра завершена
 
-    setTimeout(() => {
-        if (result !== 0) {
-            switchScreen('winPage', result, 'url(../res/wild_west/most_wanted_bg.png) no-repeat')
-        } else  {
-            switchScreen('failPage')
-        }
-    }, 1000);
+    // Проверка, находится ли пользователь на игровом экране
+    if (!isCurrentScreen('mostWantedPage')) {
+        skipResult = true; // Принудительно пропускаем результат, если экран сменился
+    }
+
+    if (!skipResult) {
+        setTimeout(() => {
+            localStorage.setItem('lastGame', 'mostWantedPage');
+
+            if (result !== 0) {
+                switchScreen('winPage', result, 'url(../res/wild_west/most_wanted_bg.png) no-repeat');
+            } else {
+                switchScreen('failPage');
+            }
+            spinButton.disabled = false; // Разблокируем кнопку после показа результата
+        }, 1000);
+    } else {
+        spinButton.disabled = false; // Разблокируем кнопку на случай смены экрана
+    }
 }
 
 const minusBetRBtn = document.getElementById('minusBetRoulette');

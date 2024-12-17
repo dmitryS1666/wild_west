@@ -420,9 +420,7 @@ html, body, button, p, span {
     top: 50%;
 }
 
-#menuPage #backMenu,
 #settings #closeSettings,
-#acceptPage #closeAcceptPage,
 #gamesPage #closeSettings,
 #gamesPage #continue,
 #settings #resetGame,
@@ -433,9 +431,7 @@ html, body, button, p, span {
     /*width: 100%;*/
 }
 
-#menuPage #backMenu img,
 #settings #closeSettings img,
-#acceptPage #closeAcceptPage img,
 #gamesPage #closeSettings img,
 #settings #resetGame img,
 #acceptPage #okAcceptPage img {

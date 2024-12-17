@@ -58,14 +58,6 @@ if (privacyPolicyBtn) {
     });
 }
 
-// BACK
-const backBtn = document.getElementById('backMenu');
-if (backBtn) {
-    backBtn.addEventListener('click', () => {
-        switchScreen('firstPage');
-    });
-}
-
 // Open GAMES PAGE
 const gamesBtn = document.getElementById('gamesBtn');
 if (gamesBtn) {
@@ -92,13 +84,9 @@ if (okAcceptPageBtn) {
     });
 }
 
-// play game
-const playBtn = document.getElementById('playBtn');
-if (playBtn) {
-    playBtn.addEventListener('click', () => {
-        clickEffect();
-        checkFirstRunAndLoadData();
-    });
+function isCurrentScreen(screenId) {
+    const screen = document.getElementById(screenId); // Получаем элемент по ID
+    return screen && !screen.classList.contains('hidden'); // Проверяем, не скрыт ли экран
 }
 
 // reset game
@@ -148,19 +136,13 @@ if (continueFailBtn) {
     });
 }
 
-// BACK button - closeAcceptPageBtn
-const closeAcceptPageBtn = document.getElementById('closeAcceptPage');
-if (closeAcceptPageBtn) {
-    closeAcceptPageBtn.addEventListener('click', () => {
-        switchScreen('menuPage');
-    });
-}
-
 // BACK button - closeSettingsBtn
 const closeSettingsBtn = document.getElementById('closeSettings');
 if (closeSettingsBtn) {
     closeSettingsBtn.addEventListener('click', () => {
-        switchScreen('menuPage');
+        let page = localStorage.getItem('lastPageBeforeSettings');
+        console.log(page)
+        switchScreen(page);
     });
 }
 
@@ -172,11 +154,19 @@ if (closeBtn) {
     });
 }
 
+// BACK button - close_btn
+const backSpinJackBtn = document.getElementById('backSpinJack');
+if (backSpinJackBtn) {
+    backSpinJackBtn.addEventListener('click', () => {
+        switchScreen('gamesPage');
+    });
+}
+
 // TAP to MENU
 const firstPageTap = document.getElementById('firstPage');
 if (firstPageTap) {
     firstPageTap.addEventListener("click", () => {
-        switchScreen('menuPage');
+        checkFirstRunAndLoadData();
     });
 }
 
@@ -192,7 +182,8 @@ if (backWinBtn) {
 const againWinBtn = document.getElementById('againWin');
 if (againWinBtn) {
     againWinBtn.addEventListener("click", () => {
-        switchScreen('gamesPage');
+        let page = localStorage.getItem('lastGame');
+        switchScreen(page);
     });
 }
 
@@ -208,7 +199,8 @@ if (backFailBtn) {
 const againFailBtn = document.getElementById('againFail');
 if (againFailBtn) {
     againFailBtn.addEventListener("click", () => {
-        switchScreen('gamesPage');
+        let page = localStorage.getItem('lastGame');
+        switchScreen(page);
     });
 }
 
@@ -232,9 +224,21 @@ const settingsButton = document.getElementById('settingsButton');
 if (settingsButton) {
     settingsButton.addEventListener('click', () => {
         clickEffect();
+        localStorage.setItem('lastPageBeforeSettings', getCurrentPage());
 
         switchScreen('settings'); // Переход к экрану основных вопросов
     });
+}
+
+function getCurrentPage() {
+    const screens = document.querySelectorAll('.screen'); // Получаем все элементы с классом screen
+    for (let screen of screens) {
+        if (!screen.classList.contains('hidden') && screen.id.includes('Page')) {
+            // Проверяем, что экран не скрыт и его id содержит "Page"
+            return screen.id; // Возвращаем ID текущего экрана
+        }
+    }
+    return null; // Если подходящий экран не найден
 }
 
 const startOldSaloonBtn = document.getElementById('startOldSaloonGame');
@@ -249,6 +253,7 @@ document.querySelector('.checkbox-container').addEventListener('change', (event)
 const settingBtn = document.getElementById('settingBtn');
 if (settingBtn) {
     settingBtn.addEventListener('click', () => {
+        localStorage.setItem('lastPageBeforeSettings', getCurrentPage());
         switchScreen('settings'); // Переход к экрану основных вопросов
     });
 }
@@ -327,6 +332,9 @@ function switchScreen(screenId, levelScore= 0, winBg = 'default') {
 }
 
 function showWinPage(levelScore, bg) {
+    let score = localStorage.getItem('score');
+    document.getElementById('scoreValue').textContent = score;
+
     const valueElement = document.getElementById('winValue');
     const winPage = document.getElementById('winPage');
 
@@ -372,4 +380,8 @@ function updatePercentage(percentageElement, progress) {
     }
 }
 
-export {switchScreen, showPreloader};
+export {
+    switchScreen,
+    showPreloader,
+    isCurrentScreen
+};

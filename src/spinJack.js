@@ -1,4 +1,4 @@
-import {switchScreen} from "./ui";
+import {isCurrentScreen, switchScreen} from "./ui";
 import {slotEffect} from "./settings";
 
 const symbols = [
@@ -67,8 +67,11 @@ function addItem(src) {
 
 // Функция вращения барабанов
 function spinReels() {
-    if (spinning) return; // Если вращение уже идет, выходим
-    spinning = true;
+    const spinButton = document.getElementById('spinSpinJackButton'); // Кнопка запуска
+
+    if (spinning) return; // Если уже идёт вращение, игнорируем нажатие
+    spinning = true; // Устанавливаем флаг вращения
+    spinButton.disabled = true; // Блокируем кнопку на время вращения
 
     const spinPromises = reels.map((_, index) => {
         return new Promise((resolve) => {
@@ -147,6 +150,7 @@ function logVisibleSymbols() {
 
 // Анализ центральной строки для определения выигрыша
 function analyzeWinning() {
+    let skipResult = false;
     const centralRowSymbols = reels.map(reel => reel[2]); // Извлекаем 3-й символ из каждого барабана
     const symbolCount = centralRowSymbols.reduce((counts, symbol) => {
         counts[symbol] = (counts[symbol] || 0) + 1;
@@ -174,13 +178,25 @@ function analyzeWinning() {
         highlightThirdRow();
     }
 
-    setTimeout(() => {
-        if (result !== 0) {
-            switchScreen('winPage', result, 'url(../res/wild_west/spin_jack_bg.png) no-repeat')
-        } else  {
-            switchScreen('failPage')
-        }
-    }, 1000);
+    // Проверка, находится ли пользователь на игровом экране
+    if (!isCurrentScreen('spinJackPage')) {
+        skipResult = true; // Принудительно пропускаем результат, если экран сменился
+    }
+
+    // Проверяем, нужно ли показывать результат и обновлять счёт
+    if (!skipResult) {
+        setTimeout(() => {
+            localStorage.setItem('lastGame', 'spinJackPage');
+
+            if (result !== 0) {
+                switchScreen('winPage', result, 'url(../res/wild_west/spin_jack_bg.png) no-repeat')
+            } else {
+                switchScreen('failPage')
+            }
+            const spinButton = document.getElementById('spinSpinJackButton'); // Кнопка запуска
+            spinButton.disabled = false; // Разблокируем кнопку
+        }, 1000);
+    }
 }
 
 function highlightThirdRow() {
