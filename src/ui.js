@@ -74,7 +74,7 @@ if (okAcceptPageBtn) {
         const acceptNotification = document.getElementById('acceptNotification');
         acceptNotification.classList.remove('hidden');
 
-        localStorage.setItem('acceptPolicy', true);
+        localStorage.setItem('acceptPolicy', 'true');
 
         setTimeout(() => {
             acceptNotification.classList.add('hidden');
@@ -141,7 +141,6 @@ const closeSettingsBtn = document.getElementById('closeSettings');
 if (closeSettingsBtn) {
     closeSettingsBtn.addEventListener('click', () => {
         let page = localStorage.getItem('lastPageBeforeSettings');
-        console.log(page)
         switchScreen(page);
     });
 }
@@ -297,38 +296,36 @@ function switchScreen(screenId, levelScore= 0, winBg = 'default') {
     screens.forEach(screen => screen.classList.add('hidden'));
 
     // Показываем прелоадер
-    showPreloader().then(() => {
-        const targetScreen = document.getElementById(screenId);
-        targetScreen.classList.remove('hidden');
+    const targetScreen = document.getElementById(screenId);
+    targetScreen.classList.remove('hidden');
 
-        if (screenId === 'winPage') {
-            stopMusic();
-            showWinPage(levelScore, winBg);
-            showInfoBlock(false);
+    if (screenId === 'winPage') {
+        stopMusic();
+        showWinPage(levelScore, winBg);
+        showInfoBlock(false);
+    }
+    if (screenId === 'failPage') {
+        stopMusic();
+        if (settings.music) {
+            failSound.volume = 0.5;
+            failSound.play()
         }
-        if (screenId === 'failPage') {
-            stopMusic();
-            if (settings.music) {
-                failSound.volume = 0.5;
-                failSound.play();
-            }
-            showInfoBlock(false);
-            runMusic();
-        }
-        if (screenId === 'spinJackPage') {
-            showInfoBlock(false);
-            setupSpinJack();
-        }
-        if (screenId === 'mostWantedPage') {
-            showInfoBlock(false);
-            setupRoulette();
-        }
-        if (screenId === 'oldSaloonPage') {
-            showInfoBlock(true);
-        }
+        showInfoBlock(false);
+        runMusic();
+    }
+    if (screenId === 'spinJackPage') {
+        showInfoBlock(false);
+        setupSpinJack();
+    }
+    if (screenId === 'mostWantedPage') {
+        showInfoBlock(false);
+        setupRoulette();
+    }
+    if (screenId === 'oldSaloonPage') {
+        showInfoBlock(true);
+    }
 
-        document.getElementById('scoreValue').innerText = localStorage.getItem('score');
-    });
+    document.getElementById('scoreValue').innerText = localStorage.getItem('score');
 }
 
 function showWinPage(levelScore, bg) {

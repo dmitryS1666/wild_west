@@ -12,11 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
     lockPortraitOrientation();
     loadSettings();
 
-    if (window.NetworkStatusController.isConnectedToInternet()) {
-        loadBanner();
-    } else {
-        checkFirstRunAndLoadData();
-    }
+        if (window.NetworkStatusController.isConnectedToInternet()) {
+            loadBanner();
+        } else {
+            showPreloader().then(() => {
+                checkFirstRunAndLoadData();
+            });
+        }
 });
 
 function loadBanner() {
@@ -36,14 +38,14 @@ export async function displayDefaultGames() {
 export function checkFirstRunAndLoadData() {
     let acceptPrivacy = localStorage.getItem('acceptPolicy');
 
+    // showPreloader();
+    // showPreloader().then(() => {
     if (acceptPrivacy) {
         switchScreen('menuPage');
     } else {
-        localStorage.setItem('wildWestSettings', JSON.stringify({ music: true, vibration: true }));
-        localStorage.setItem('score', 1000);
-
         switchScreen('acceptPage');
     }
+    // });
 }
 
 function lockPortraitOrientation() {

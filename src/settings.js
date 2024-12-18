@@ -8,12 +8,14 @@ let selectSound = new Audio('res/audio/select.mp3');
 let hitSound = new Audio('res/audio/hit.mp3');
 let slotSound = new Audio('res/audio/slot_sound.mp3');
 
-const menuMusic = document.getElementById('menuMusic');
-
-let settings = localStorage.getItem('wildWestSettings');
-
+let menuMusic;
+let settings;
 // Загрузка настроек из LocalStorage
 function loadSettings() {
+    menuMusic = document.getElementById('menuMusic');
+    localStorage.setItem('wildWestSettings', JSON.stringify({ music: false, vibration: false }));
+    localStorage.setItem('score', 1000);
+
     const storedSettings = JSON.parse(localStorage.getItem('wildWestSettings'));
     if (storedSettings) {
         settings = storedSettings;
@@ -67,7 +69,7 @@ function runMusic() {
 }
 
 function vibrate(duration) {
-    if (settings.vibration && navigator.vibrate) {
+    if (settings.vibration) {
         navigator.vibrate(duration);
     }
 }

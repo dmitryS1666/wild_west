@@ -96,7 +96,7 @@ function endGame() {
     gameArea.innerHTML = ''; // Удаляем все объекты
 
     // Проверка, находится ли пользователь на игровом экране
-    if (!isCurrentScreen('oldSaloonCanvas')) {
+    if (!isCurrentScreen('oldSaloonPage')) {
         skipResult = true; // Принудительно пропускаем результат, если экран сменился
     }
 
