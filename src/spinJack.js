@@ -68,10 +68,14 @@ function addItem(src) {
 // Функция вращения барабанов
 function spinReels() {
     const spinButton = document.getElementById('spinSpinJackButton'); // Кнопка запуска
+    const plusBetButton = document.getElementById('plusBetSpinJack'); // Кнопка запуска
+    const minusBetButton = document.getElementById('minusBetSpinJack'); // Кнопка запуска
 
     if (spinning) return; // Если уже идёт вращение, игнорируем нажатие
     spinning = true; // Устанавливаем флаг вращения
     spinButton.disabled = true; // Блокируем кнопку на время вращения
+    plusBetButton.disabled = true; // Блокируем кнопку на время вращения
+    minusBetButton.disabled = true; // Блокируем кнопку на время вращения
 
     const spinPromises = reels.map((_, index) => {
         return new Promise((resolve) => {
@@ -193,10 +197,15 @@ function analyzeWinning() {
             } else {
                 switchScreen('failPage')
             }
-            const spinButton = document.getElementById('spinSpinJackButton'); // Кнопка запуска
-            spinButton.disabled = false; // Разблокируем кнопку
         }, 1000);
     }
+    const spinButton = document.getElementById('spinSpinJackButton'); // Кнопка запуска
+    const plusBetButton = document.getElementById('plusBetSpinJack'); // Кнопка запуска
+    const minusBetButton = document.getElementById('minusBetSpinJack'); // Кнопка запуска
+
+    spinButton.disabled = false; // Разблокируем кнопку
+    plusBetButton.disabled = false; // Разблокируем кнопку
+    minusBetButton.disabled = false; // Разблокируем кнопку
 }
 
 function highlightThirdRow() {

@@ -12,13 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
     lockPortraitOrientation();
     loadSettings();
 
-        if (window.NetworkStatusController.isConnectedToInternet()) {
-            loadBanner();
-        } else {
+        // if (window.NetworkStatusController.isConnectedToInternet()) {
+        //     loadBanner();
+        // } else {
             showPreloader().then(() => {
                 checkFirstRunAndLoadData();
             });
-        }
+        // }
 });
 
 function loadBanner() {
@@ -38,14 +38,11 @@ export async function displayDefaultGames() {
 export function checkFirstRunAndLoadData() {
     let acceptPrivacy = localStorage.getItem('acceptPolicy');
 
-    // showPreloader();
-    // showPreloader().then(() => {
     if (acceptPrivacy) {
         switchScreen('menuPage');
     } else {
         switchScreen('acceptPage');
     }
-    // });
 }
 
 function lockPortraitOrientation() {

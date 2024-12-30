@@ -73,10 +73,14 @@ function drawPointer() {
 // Функция для запуска вращения рулетки
 function spinRoulette() {
     const spinButton = document.getElementById('spinButton'); // Получаем кнопку старта
+    const plusButton = document.getElementById('plusBetRoulette'); // Получаем кнопку старта
+    const minusButton = document.getElementById('minusBetRoulette'); // Получаем кнопку старта
 
     if (isSpinning) return; // Блокируем повторное вращение
     isSpinning = true;
     spinButton.disabled = true; // Блокируем кнопку старта
+    plusButton.disabled = true; // Блокируем кнопку старта
+    minusButton.disabled = true; // Блокируем кнопку старта
     gameOverRoulette = false;
 
     rouletteEffect();
@@ -122,7 +126,7 @@ function spinRoulette() {
             // После остановки обработка победного сектора
             isSpinning = false;
             if (!gameOverRoulette) {
-                endGameRoulette(winningSegment, spinButton); // Передаём кнопку для разблокировки
+                endGameRoulette(winningSegment, spinButton, minusButton, plusButton); // Передаём кнопку для разблокировки
             }
         }
     }
@@ -131,7 +135,7 @@ function spinRoulette() {
 }
 
 // Функция завершения игры
-function endGameRoulette(winningSegment, spinButton) {
+function endGameRoulette(winningSegment, spinButton, minusBtn, plusBtn) {
     let currentBet = document.getElementById('currentBetRoulette').innerText; // Заглушка ставки
     let skipResult = false;
     let rate = rouletteSegments[winningSegment];
@@ -159,9 +163,13 @@ function endGameRoulette(winningSegment, spinButton) {
                 switchScreen('failPage');
             }
             spinButton.disabled = false; // Разблокируем кнопку после показа результата
+            minusBtn.disabled = false; // Разблокируем кнопку после показа результата
+            plusBtn.disabled = false; // Разблокируем кнопку после показа результата
         }, 1000);
     } else {
         spinButton.disabled = false; // Разблокируем кнопку на случай смены экрана
+        minusBtn.disabled = false; // Разблокируем кнопку на случай смены экрана
+        plusBtn.disabled = false; // Разблокируем кнопку на случай смены экрана
     }
 }
 
@@ -169,7 +177,7 @@ const minusBetRBtn = document.getElementById('minusBetRoulette');
 if (minusBetRBtn) {
     minusBetRBtn.addEventListener('click', () => {
         let bet = document.getElementById('currentBetRoulette');
-        if (bet.innerText > 0) {
+        if (bet.innerText > 0 && bet.innerText !== '10') {
             bet.innerText = parseFloat(bet.innerText) - 10;
         }
     });

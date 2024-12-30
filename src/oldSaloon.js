@@ -112,10 +112,11 @@ function endGame() {
             } else {
                 switchScreen('failPage');
             }
-            let tapText = document.getElementById('startOldSaloonGame');
-            tapText.style.display = 'block';
         }, 1000);
     }
+
+    let tapText = document.getElementById('startOldSaloonGame');
+    tapText.style.display = 'block';
 }
 
 // Функция для потери жизни

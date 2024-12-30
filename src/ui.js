@@ -95,7 +95,8 @@ if (resetGameBtn) {
     resetGameBtn.addEventListener('click', () => {
         clickEffect();
 
-        localStorage.clear();
+        localStorage.setItem('score', 1000);
+        localStorage.setItem('wildWestSettings', JSON.stringify({ music: true, vibration: true }));
 
         // Показать уведомление
         const resetNotification = document.getElementById('resetNotification');

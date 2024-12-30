@@ -13,7 +13,7 @@ let settings;
 // Загрузка настроек из LocalStorage
 function loadSettings() {
     menuMusic = document.getElementById('menuMusic');
-    localStorage.setItem('wildWestSettings', JSON.stringify({ music: false, vibration: false }));
+    localStorage.setItem('wildWestSettings', JSON.stringify({ music: true, vibration: true }));
     localStorage.setItem('score', 1000);
 
     const storedSettings = JSON.parse(localStorage.getItem('wildWestSettings'));
