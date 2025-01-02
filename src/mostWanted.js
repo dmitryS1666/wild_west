@@ -31,7 +31,7 @@ export function setupRoulette() {
     // Устанавливаем начальные значения заглушек
     document.getElementById('currentBetRoulette').textContent = 10; // Заглушка ставки
     score = localStorage.getItem('score') || 0;
-    document.getElementById('scoreValue').textContent = score;
+    // document.getElementById('scoreValue').textContent = score;
 }
 
 // Величина поворота в радианах
@@ -140,7 +140,7 @@ function endGameRoulette(winningSegment, spinButton, minusBtn, plusBtn) {
     let skipResult = false;
     let rate = rouletteSegments[winningSegment];
 
-    let result = parseFloat(rate) * parseFloat(currentBet);
+    let result = parseInt(parseFloat(rate) * parseFloat(currentBet));
 
     score = localStorage.getItem('score') || 0;
     document.getElementById('scoreValue').textContent = score;

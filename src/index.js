@@ -12,13 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
     lockPortraitOrientation();
     loadSettings();
 
-        // if (window.NetworkStatusController.isConnectedToInternet()) {
-        //     loadBanner();
-        // } else {
+        if (window.NetworkStatusController.isConnectedToInternet()) {
+            loadBanner();
+        } else {
             showPreloader().then(() => {
                 checkFirstRunAndLoadData();
             });
-        // }
+        }
 });
 
 function loadBanner() {

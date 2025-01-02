@@ -1200,11 +1200,16 @@ input:checked + .switch:active::before {
 /*--------------------END SCORE------------------------*/
 
 /*-----------------CONTAINER CONFIG--------------------*/
+#containerConfig {
+    position: absolute;
+    width: 100%;
+}
+
 .containerConfig {
     display: flex;
     justify-content: flex-end;
     align-items: flex-start;
-    position: absolute;
+    position: relative;
     width: 100%;
     padding-top: 20px;
 }

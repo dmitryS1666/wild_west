@@ -15,9 +15,10 @@ const symbols = [
 let reels = [[], [], [], []]; // Состояние барабанов
 let spinning = false; // Флаг вращения
 let reelElements = [];
-let score = localStorage.getItem('score') || 0;
+let score;
 
 export function setupSpinJack() {
+    score = localStorage.getItem('score') || 0;
     reelElements = [
         document.getElementById('reel1'),
         document.getElementById('reel2'),
@@ -27,6 +28,12 @@ export function setupSpinJack() {
 
     document.getElementById('currentBetSpinJack').textContent = 10; // Заглушка ставки
     document.getElementById('scoreValue').textContent = score;
+
+    const plusBetButton = document.getElementById('plusBetSpinJack'); // Кнопка запуска
+    const minusBetButton = document.getElementById('minusBetSpinJack'); // Кнопка запуска
+
+    plusBetButton.disabled = false; // Блокируем кнопку на время вращения
+    minusBetButton.disabled = false; // Блокируем кнопку на время вращения
 
     // Инициализация
     initializeReels();

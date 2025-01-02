@@ -4,7 +4,7 @@ import {tapEffect, shootEffect, hitEffect} from "./settings";
 
 let gameInterval;
 let lives = 3;
-let score = localStorage.getItem('score') || 0;
+let score;
 let result = 0;
 let isGameRunning = false;
 
@@ -29,6 +29,7 @@ export function startGame() {
 
     lives = 3;
     result = 0;
+    score = localStorage.getItem('score') || 0;
     document.getElementById('scoreGameOS').innerText = `${result}`;
 
     const gameArea = document.getElementById('oldSaloonCanvas');
@@ -103,16 +104,13 @@ function endGame() {
     // Проверяем, нужно ли показывать результат и обновлять счёт
     if (!skipResult) {
         localStorage.setItem('score', parseFloat(score) + result);
+        localStorage.setItem('lastGame', 'oldSaloonPage');
 
-        setTimeout(() => {
-            localStorage.setItem('lastGame', 'oldSaloonPage');
-
-            if (result !== 0) {
-                switchScreen('winPage', result, 'url(../res/wild_west/old_saloon_bg.png) no-repeat');
-            } else {
-                switchScreen('failPage');
-            }
-        }, 1000);
+        if (result !== 0) {
+            switchScreen('winPage', result, 'url(../res/wild_west/old_saloon_bg.png) no-repeat');
+        } else {
+            switchScreen('failPage');
+        }
     }
 
     let tapText = document.getElementById('startOldSaloonGame');
